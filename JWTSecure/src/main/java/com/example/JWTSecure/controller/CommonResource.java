@@ -2,6 +2,7 @@ package com.example.JWTSecure.controller;
 
 import com.example.JWTSecure.DTO.ClassDTO;
 import com.example.JWTSecure.DTO.TimeTableTeacherDTO;
+import com.example.JWTSecure.DTO.Week;
 import com.example.JWTSecure.domain.Classes;
 import com.example.JWTSecure.domain.Course;
 import com.example.JWTSecure.service.AcademicAdminService;
@@ -9,9 +10,6 @@ import com.example.JWTSecure.service.TimeTableTeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +42,7 @@ public class CommonResource {
     }
 
     @GetMapping("/get_every_week")
-    public ResponseEntity<Map<String, String>> getEveryWeek() {
+    public ResponseEntity<List<Week>> getEveryWeek() {
         return ResponseEntity.ok().body(timeTableTeacherService.getEveryWeek());
     }
 
