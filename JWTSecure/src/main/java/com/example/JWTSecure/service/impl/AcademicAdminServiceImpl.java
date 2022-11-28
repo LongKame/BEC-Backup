@@ -40,6 +40,8 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
     private final ClassCustomRepo classCustomRepo;
     private final ClassRepo classRepo;
     private final RoomRepo roomRepo;
+    private final CurriculumRepo curriculumRepo;
+    private final CurriculumCustomRepo curriculumCustomRepo;
 
     @Override
     public List<Quiz> getQuiz(Long levelId) {
@@ -360,7 +362,7 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
     public List<Course> getCourse() {
         List<Course> list = new ArrayList<>();
         try {
-            list = courseRepo.findAll();
+            list = courseRepo.findAllByOrderByIdAsc();
         } catch (Exception ex) {
             return null;
         }
@@ -416,6 +418,102 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
             return classCustomRepo.getClasses(id);
         } catch (Exception ex) {
             return null;
+        }
+    }
+
+    @Override
+    public ResponseStatus addCurriculum(Curriculum curriculum) {
+        ResponseStatus rs = new ResponseStatus();
+        String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        LocalDateTime localDateTime = LocalDateTime.parse(timeStamp, formatter);
+        if (curriculum != null) {
+            try {
+                curriculum.setCreatedAt(localDateTime);
+                curriculum.setUpdatedAt(localDateTime);
+                curriculumRepo.save(curriculum);
+                rs.setMessage("Ok");
+                rs.setState(true);
+            } catch (Exception ex) {
+                rs.setMessage("Failure");
+                rs.setState(false);
+            }
+        }
+        return rs;
+    }
+
+    @Override
+    public ResponseStatus editCurriculum(Curriculum curriculum) {
+        ResponseStatus rs = new ResponseStatus();
+        if (curriculum != null) {
+            try {
+                curriculum.setCreatedAt(curriculumRepo.findById(curriculum.getId()).get().getUpdatedAt());
+                String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                LocalDateTime localDateTime = LocalDateTime.parse(timeStamp, formatter);
+                curriculum.setUpdatedAt(localDateTime);
+                curriculumRepo.save(curriculum);
+                rs.setMessage("Ok");
+                rs.setState(true);
+            } catch (Exception ex) {
+                rs.setMessage("Failure");
+                rs.setState(false);
+            }
+        }
+        return rs;
+    }
+
+    @Override
+    public ResponseStatus deleteCurriculum(Long id) {
+        ResponseStatus responseStatus = new ResponseStatus();
+        try {
+            if (id != null) {
+                curriculumRepo.deleteById(id);
+                responseStatus.setState(true);
+                responseStatus.setMessage("Success");
+            } else {
+                responseStatus.setState(false);
+                responseStatus.setMessage("Failure");
+            }
+            return responseStatus;
+        } catch (Exception e) {
+            responseStatus.setState(false);
+            responseStatus.setMessage("Failure");
+            return responseStatus;
+        }
+    }
+
+    @Override
+    public SearchResultDTO<CurriculumDTO> getCurriculum(CurriculumDTO curriculumDTO) {
+        List<CurriculumDTO> dataResult;
+        SearchResultDTO<CurriculumDTO> searchResult = new SearchResultDTO<>();
+        try {
+            Integer totalRecord = curriculumCustomRepo.getTotal(curriculumDTO).size();
+            dataResult = curriculumCustomRepo.doSearch(curriculumDTO);
+            if (dataResult != null && !dataResult.isEmpty()) {
+                searchResult.setCode("0");
+                searchResult.setSuccess(true);
+                searchResult.setTitle("Success");
+                searchResult.setMessage("Success");
+                searchResult.setResultData(dataResult);
+                searchResult.setTotalRecordNoLimit(totalRecord);
+            } else {
+                searchResult.setCode("0");
+                searchResult.setSuccess(false);
+                searchResult.setTitle("Failure");
+                searchResult.setMessage("Failure");
+                searchResult.setResultData(Collections.emptyList());
+                searchResult.setTotalRecordNoLimit(0);
+            }
+            return searchResult;
+        } catch (Exception e) {
+            searchResult.setCode("0");
+            searchResult.setSuccess(false);
+            searchResult.setTitle("Failure");
+            searchResult.setMessage("Failure");
+            searchResult.setResultData(Collections.emptyList());
+            searchResult.setTotalRecordNoLimit(0);
+            return searchResult;
         }
     }
 
