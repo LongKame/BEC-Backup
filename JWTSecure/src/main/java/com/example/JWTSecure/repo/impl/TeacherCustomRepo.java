@@ -1,13 +1,11 @@
 package com.example.JWTSecure.repo.impl;
 
-import com.example.JWTSecure.DTO.StudentDTO;
 import com.example.JWTSecure.DTO.TeacherDTO;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.*;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -27,6 +25,8 @@ public class TeacherCustomRepo {
         if (teacherDTO.getKey_search()!=null) {
             sql.append(" AND (UPPER(u.fullname) LIKE CONCAT('%', UPPER(:full_name), '%') ESCAPE '&') ");
         }
+
+        sql.append(" order by t.id");
 
         NativeQuery<TeacherDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
@@ -64,6 +64,8 @@ public class TeacherCustomRepo {
             sql.append(" AND (UPPER(u.fullname) LIKE CONCAT('%', UPPER(:full_name), '%') ESCAPE '&') ");
         }
 
+        sql.append(" order by t.id");
+
         NativeQuery<TeacherDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (teacherDTO.getKey_search()!=null) {
@@ -95,6 +97,7 @@ public class TeacherCustomRepo {
         if(teacherDTO.getUser_Id()!=null){
             sql.append(" AND s.user_Id = :user_Id ");
         }
+
         NativeQuery<TeacherDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (teacherDTO.getUser_Id() != null) {
@@ -126,6 +129,8 @@ public class TeacherCustomRepo {
                         "u.username as user_name, u.fullname as full_name, t.image_url as imageUrl, u.email as email, u.phone as phone, u.address as address, u.active as active\n" +
                         "from teacher t join users u on t.user_id = u.id");
         sql.append(" WHERE 1 = 1 ");
+
+        sql.append(" order by t.id");
 
         NativeQuery<TeacherDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 

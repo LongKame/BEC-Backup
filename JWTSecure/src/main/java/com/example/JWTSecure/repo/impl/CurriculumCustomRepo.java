@@ -7,7 +7,6 @@ import org.hibernate.transform.Transformers;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -22,13 +21,16 @@ public class CurriculumCustomRepo {
     public List<CurriculumDTO> doSearch(CurriculumDTO curriculumDTO) {
 
         StringBuilder sql = new StringBuilder()
-                .append("select  cu.id as id, cu.course_id,cu.name as curriculum_name, cu.link_url, cu.description,\n" +
+                .append("select cu.id as id, cu.course_id,cu.name as curriculum_name, cu.link_url, cu.description,\n" +
                         "cu.created_at, cu.updated_at, c.level_id, c.name as course_name\n" +
                         "from curriculum cu join course c on c.id = cu.course_id  ");
         sql.append(" WHERE 1 = 1 ");
         if(curriculumDTO.getKey_search()!=null){
             sql.append(" AND (UPPER(cu.name) LIKE CONCAT('%', UPPER(:name), '%') ESCAPE '&') ");
         }
+
+        sql.append(" order by cu.id");
+
         NativeQuery<CurriculumDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (curriculumDTO.getKey_search() != null) {
@@ -63,6 +65,9 @@ public class CurriculumCustomRepo {
         if(curriculumDTO.getKey_search()!=null){
             sql.append(" AND (UPPER(cu.name) LIKE CONCAT('%', UPPER(:name), '%') ESCAPE '&') ");
         }
+
+        sql.append(" order by cu.id");
+
         NativeQuery<CurriculumDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (curriculumDTO.getKey_search() != null) {

@@ -1,5 +1,4 @@
 package com.example.JWTSecure.service.impl;
-
 import com.example.JWTSecure.domain.Role;
 import com.example.JWTSecure.domain.User;
 import com.example.JWTSecure.repo.*;
@@ -16,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.transaction.Transactional;

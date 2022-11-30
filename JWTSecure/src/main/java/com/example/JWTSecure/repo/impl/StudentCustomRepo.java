@@ -30,6 +30,8 @@ public class StudentCustomRepo {
             sql.append(" AND (UPPER(u.fullname) LIKE CONCAT('%', UPPER(:full_name), '%') ESCAPE '&') ");
         }
 
+        sql.append(" order by s.id");
+
         NativeQuery<StudentDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (studentDTO.getKey_search()!=null) {
@@ -73,6 +75,8 @@ public class StudentCustomRepo {
             sql.append(" AND (UPPER(u.fullname) LIKE CONCAT('%', UPPER(:full_name), '%') ESCAPE '&') ");
         }
 
+        sql.append(" order by s.id");
+
         NativeQuery<StudentDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (studentDTO.getKey_search()!=null) {
@@ -112,6 +116,8 @@ public class StudentCustomRepo {
         if (studentDTO.getKey_search()!=null) {
             sql.append(" AND (UPPER(u.fullname) LIKE CONCAT('%', UPPER(:full_name), '%') ESCAPE '&') ");
         }
+
+        sql.append(" order by s.id");
 
         NativeQuery<StudentDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
@@ -154,6 +160,8 @@ public class StudentCustomRepo {
             sql.append(" AND (UPPER(u.fullname) LIKE CONCAT('%', UPPER(:full_name), '%') ESCAPE '&') ");
         }
 
+        sql.append(" order by s.id");
+
         NativeQuery<StudentDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (studentDTO.getKey_search()!=null) {
@@ -177,19 +185,6 @@ public class StudentCustomRepo {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     public StudentDTO getStudent(StudentDTO studentDTO) {
 
         StringBuilder sql = new StringBuilder()
@@ -197,9 +192,7 @@ public class StudentCustomRepo {
                         "u.username as user_name, u.fullname as full_name, u.email as email, u.phone as phone, u.address as address, u.active as active\n" +
                         "from student s join users u on s.user_id = u.id ");
         sql.append("WHERE 1 = 1 ");
-        if(studentDTO.getUser_Id()!=null){
-            sql.append(" AND s.user_Id = :user_Id ");
-        }
+
         NativeQuery<StudentDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (studentDTO.getUser_Id() != null) {
@@ -235,6 +228,9 @@ public class StudentCustomRepo {
         if(id!=null){
             sql.append(" AND s.class_id = :class_id ");
         }
+
+        sql.append(" order by s.id ");
+
         NativeQuery<StudentDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (id != null) {
@@ -265,6 +261,9 @@ public class StudentCustomRepo {
         if(id != null){
             sql.append(" AND s.id = :id ");
         }
+
+        sql.append(" order by s.id ");
+
         NativeQuery<StudentDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (id != null) {

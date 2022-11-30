@@ -1,7 +1,6 @@
 package com.example.JWTSecure.controller;
 import com.example.JWTSecure.DTO.*;
 import com.example.JWTSecure.DTO.ResponseStatus;
-import com.example.JWTSecure.domain.StudentInClass;
 import com.example.JWTSecure.service.ClassService;
 import com.example.JWTSecure.service.StudentService;
 import lombok.RequiredArgsConstructor;

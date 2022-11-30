@@ -287,27 +287,8 @@ public class TeacherServiceImpl implements TeacherService {
                     list.add(new SearchTimeTable());
                 }
             }
-
-//            c.setTime(new Date(searchTimeTable.getStart_date()));
-//            c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
-//            LocalDate ld = LocalDateTime.ofInstant(c.toInstant(), c.getTimeZone().toZoneId()).toLocalDate();
-//            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//            LocalDate localDate = null, lastDate = null;
-//
-//            for (int j = 0; j < searchTimeTable.getNumber_slot() / 2; j++) {
-//                if (j == 0) {
-//                    localDate = LocalDate.parse(ld.toString(), dtf);
-//                    lastDate = localDate.plus(6, ChronoUnit.DAYS);
-//                    map.put(localDate, lastDate.toString());
-//                } else if (j >= 1) {
-//                    localDate = localDate.plus(7, ChronoUnit.DAYS);
-//                    lastDate = localDate.plus(6, ChronoUnit.DAYS);
-//                    map.put(localDate, lastDate.toString());
-//                }
-//            }
             list1.add(map);
             timeTableDTO.setTime_table(list);
-//            timeTableDTO.setFor_time(list1);
             return timeTableDTO;
         } catch (Exception ex) {
             return null;
@@ -316,10 +297,6 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public TimeTableDTO getAllTimetableByTeacher(Long id) {
-
-        if(id!=null){
-
-        }
 
         return null;
     }

@@ -2,15 +2,11 @@ package com.example.JWTSecure.repo.impl;
 
 
 import com.example.JWTSecure.DTO.RoomDTO;
-import com.example.JWTSecure.DTO.TeacherDTO;
-import com.example.JWTSecure.domain.Quiz;
-import com.example.JWTSecure.domain.Room;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.*;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -31,6 +27,8 @@ public class RoomCustomRepo {
         if (roomDTO.getKey_search()!=null) {
             sql.append(" AND (UPPER(roomname) LIKE CONCAT('%', UPPER(:roomname), '%') ESCAPE '&') ");
         }
+
+        sql.append(" order by id");
 
         NativeQuery<RoomDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
@@ -64,6 +62,8 @@ public class RoomCustomRepo {
         if (roomDTO.getKey_search()!=null) {
             sql.append(" AND (UPPER(roomname) LIKE CONCAT('%', UPPER(:roomname), '%') ESCAPE '&') ");
         }
+
+        sql.append(" order by id");
 
         NativeQuery<RoomDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 

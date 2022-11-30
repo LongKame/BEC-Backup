@@ -9,12 +9,13 @@ import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+
 
 @Repository
 public class TimeTableCustomRepo {
     @PersistenceContext
     private EntityManager entityManager;
+
     public SearchTimeTable doSearch(Long id) {
 
         StringBuilder sql = new StringBuilder()
@@ -44,8 +45,6 @@ public class TimeTableCustomRepo {
         query.setResultTransformer(Transformers.aliasToBean(SearchTimeTable.class));
         return (SearchTimeTable) query.getSingleResult();
     }
-
-
 
 }
 
