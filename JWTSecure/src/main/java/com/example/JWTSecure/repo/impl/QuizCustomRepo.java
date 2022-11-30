@@ -29,8 +29,9 @@ public class QuizCustomRepo {
                         "FROM quiz");
         sql.append(" WHERE 1 = 1 ");
         if(levelId!=null){
-            sql.append(" AND level_id = :level_id ORDER BY RANDOM()  LIMIT 20");
+            sql.append(" AND level_id = :level_id ORDER BY RANDOM()  LIMIT 40");
         }
+
         NativeQuery<Quiz> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (levelId != null) {
@@ -62,6 +63,9 @@ public class QuizCustomRepo {
         if(quizDTO.getKey_search()!=null){
             sql.append(" AND (UPPER(q.question) LIKE CONCAT('%', UPPER(:question), '%') ESCAPE '&') ");
         }
+
+        sql.append(" order by q.id");
+
         NativeQuery<QuizDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (quizDTO.getKey_search() != null) {
@@ -97,6 +101,9 @@ public class QuizCustomRepo {
         if(quizDTO.getKey_search()!=null){
             sql.append("   AND (UPPER(q.question) LIKE CONCAT('%', UPPER(:question), '%') ESCAPE '&') ");
         }
+
+        sql.append(" order by q.id");
+
         NativeQuery<QuizDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (quizDTO.getKey_search() != null) {

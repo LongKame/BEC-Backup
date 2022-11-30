@@ -1,6 +1,7 @@
 package com.example.JWTSecure.service.impl;
 
 import com.example.JWTSecure.DTO.ClassDTO;
+import com.example.JWTSecure.DTO.ClassScheduleDTO;
 import com.example.JWTSecure.DTO.ResponseStatus;
 import com.example.JWTSecure.DTO.SearchResultDTO;
 import com.example.JWTSecure.domain.*;
@@ -14,7 +15,6 @@ import com.nimbusds.oauth2.sdk.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,6 +22,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -186,5 +187,33 @@ public class ClassServiceImpl implements ClassService {
             responseStatus.setMessage("Failure");
         }
         return responseStatus;
+    }
+
+    @Override
+    public List<ClassDTO> getTotalClass() {
+        List<ClassDTO> list = new ArrayList<>();
+        try {
+            list = classCustomRepo.getTotalClass();
+        } catch (Exception ex) {
+        }
+        return list;
+    }
+
+    @Override
+    public List<ClassScheduleDTO> getClassById(Long class_id) {
+        List<ClassScheduleDTO> list = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            list = classCustomRepo.getScheduleById(class_id);
+            for (ClassScheduleDTO i : list) {
+                String sDate = i.getDate_study();
+                Date sParseDate = sdf.parse(sDate);
+                i.setDate_study(sdf1.format(sParseDate));
+            }
+        } catch (Exception e) {
+
+        }
+        return list;
     }
 }

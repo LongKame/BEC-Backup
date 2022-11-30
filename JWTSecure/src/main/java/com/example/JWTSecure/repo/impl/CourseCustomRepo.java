@@ -1,13 +1,11 @@
 package com.example.JWTSecure.repo.impl;
 
 import com.example.JWTSecure.DTO.CourseDTO;
-import com.example.JWTSecure.DTO.TeacherDTO;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.*;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -29,6 +27,8 @@ public class CourseCustomRepo {
         if (courseDTO.getKey_search()!=null) {
             sql.append(" AND (UPPER(c.name) LIKE CONCAT('%', UPPER(:name), '%') ESCAPE '&') ");
         }
+
+        sql.append(" order by c.id ");
 
         NativeQuery<CourseDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
@@ -64,6 +64,8 @@ public class CourseCustomRepo {
         if (courseDTO.getKey_search()!=null) {
             sql.append(" AND (UPPER(c.name) LIKE CONCAT('%', UPPER(:name), '%') ESCAPE '&') ");
         }
+
+        sql.append(" order by c.id ");
 
         NativeQuery<CourseDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 

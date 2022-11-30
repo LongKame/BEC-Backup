@@ -1,12 +1,14 @@
 package com.example.JWTSecure.service;
 
+import com.example.JWTSecure.DTO.TimeTableStudentDTO;
 import com.example.JWTSecure.DTO.TimeTableTeacherDTO;
-
+import com.example.JWTSecure.DTO.Week;
 import java.util.List;
-import java.util.Map;
+
 
 public interface TimeTableTeacherService {
 
     List<TimeTableTeacherDTO> getTimeTableOfTeacher(TimeTableTeacherDTO timeTableTeacherDTO);
-    Map<String, String> getEveryWeek();
+    List<Week> getEveryWeek();
+    List<TimeTableStudentDTO> getTimeTableOfStudent(TimeTableStudentDTO timeTableStudentDTO);
 }

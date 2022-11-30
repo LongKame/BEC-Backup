@@ -1,8 +1,6 @@
 package com.example.JWTSecure.repo.impl;
 
 import com.example.JWTSecure.DTO.AcademicAdminDTO;
-import com.example.JWTSecure.DTO.StudentDTO;
-import com.example.JWTSecure.DTO.TeacherDTO;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
@@ -10,7 +8,6 @@ import org.hibernate.type.BooleanType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -29,8 +26,11 @@ public class AcademicAdminCustomRepo {
                         "from academic_admin s join users u on s.user_id = u.id ");
         sql.append(" WHERE 1 = 1 ");
         if(academicAdminDTO.getKey_search()!=null){
-            sql.append(" AND (UPPER(u.fullname) LIKE CONCAT('%', UPPER(:full_name), '%') ESCAPE '&') ");
+            sql.append(" AND (UPPER(u.fullname) LIKE CONCAT('%', UPPER(:full_name), '%') ESCAPE '&')");
         }
+
+        sql.append(" order by s.id ");
+
         NativeQuery<AcademicAdminDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (academicAdminDTO.getKey_search() != null) {
@@ -65,6 +65,9 @@ public class AcademicAdminCustomRepo {
         if(academicAdminDTO.getKey_search()!=null){
             sql.append(" AND (UPPER(u.fullname) LIKE CONCAT('%', UPPER(:full_name), '%') ESCAPE '&') ");
         }
+
+        sql.append(" order by s.id ");
+
         NativeQuery<AcademicAdminDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (academicAdminDTO.getKey_search() != null) {

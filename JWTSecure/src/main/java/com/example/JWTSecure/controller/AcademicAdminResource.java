@@ -1,10 +1,7 @@
 package com.example.JWTSecure.controller;
 import com.example.JWTSecure.DTO.*;
 import com.example.JWTSecure.DTO.ResponseStatus;
-import com.example.JWTSecure.domain.Course;
-import com.example.JWTSecure.domain.Quiz;
-import com.example.JWTSecure.domain.Room;
-import com.example.JWTSecure.domain.Slot;
+import com.example.JWTSecure.domain.*;
 import com.example.JWTSecure.service.AcademicAdminService;
 import com.example.JWTSecure.service.RoomService;
 import com.example.JWTSecure.service.SlotService;
@@ -103,5 +100,25 @@ public class AcademicAdminResource {
     @DeleteMapping("/delete_room")
     public ResponseEntity<ResponseStatus> deleteRoom(@PathVariable Long id) {
         return ResponseEntity.ok().body(roomService.updateActiveRoom(id));
+    }
+
+    @PostMapping("/add_curriculum")
+    public ResponseEntity<ResponseStatus> addRoom(@RequestBody Curriculum curriculum) {
+        return ResponseEntity.ok().body(academicAdminService.addCurriculum(curriculum));
+    }
+
+    @PutMapping("/edit_curriculum")
+    public ResponseEntity<ResponseStatus> editRoom(@RequestBody Curriculum curriculum) {
+        return ResponseEntity.ok().body(academicAdminService.editCurriculum(curriculum));
+    }
+
+    @DeleteMapping("/delete_curriculum/{id}")
+    public ResponseEntity<ResponseStatus> deleteCurriculum(@PathVariable Long id) {
+        return ResponseEntity.ok().body(academicAdminService.deleteCurriculum(id));
+    }
+
+    @PostMapping("/get_curriculum_paging")
+    public ResponseEntity<SearchResultDTO<CurriculumDTO>> getCurriculumPaging(@RequestBody CurriculumDTO curriculumDTO) {
+        return ResponseEntity.ok().body(academicAdminService.getCurriculum(curriculumDTO));
     }
 }

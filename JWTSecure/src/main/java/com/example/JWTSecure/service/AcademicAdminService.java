@@ -1,10 +1,7 @@
 package com.example.JWTSecure.service;
 
 import com.example.JWTSecure.DTO.*;
-import com.example.JWTSecure.domain.Classes;
-import com.example.JWTSecure.domain.Course;
-import com.example.JWTSecure.domain.Quiz;
-import com.example.JWTSecure.domain.Room;
+import com.example.JWTSecure.domain.*;
 
 import java.util.List;
 
@@ -28,5 +25,8 @@ public interface AcademicAdminService {
     SearchResultDTO<QuizDTO> getQuizPaging(QuizDTO quizDTO);
     Course getCourseById(Long id);
     List<ClassDTO> getClassByCourseId(Long id);
-
+    ResponseStatus addCurriculum(Curriculum curriculum);
+    ResponseStatus editCurriculum(Curriculum curriculum);
+    ResponseStatus deleteCurriculum(Long id);
+    SearchResultDTO<CurriculumDTO> getCurriculum(CurriculumDTO curriculumDTO);
 }
