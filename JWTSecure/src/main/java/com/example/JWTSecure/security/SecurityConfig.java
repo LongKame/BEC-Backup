@@ -78,12 +78,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**")
                 .permitAll()
-                .antMatchers(
-                        "/v2/api-docs", // swagger api doc
-                        "/swagger-resources/**",    // swagger resources
-                        "/configuration/**",    // swagger configuration
-                        "/swagger-ui/**"    // swagger-ui
-                ).permitAll()
+//                .antMatchers(
+//                        "/v2/api-docs", // swagger api doc
+//                        "/swagger-resources/**",    // swagger resources
+//                        "/configuration/**",    // swagger configuration
+//                        "/swagger-ui/**"    // swagger-ui
+//                ).permitAll()
                 /* hard code for by pass role checking, should remove later */
 //                .antMatchers("/**")
 //                .permitAll()

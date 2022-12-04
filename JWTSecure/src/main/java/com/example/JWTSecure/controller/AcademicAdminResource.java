@@ -31,7 +31,6 @@ public class AcademicAdminResource {
         return ResponseEntity.ok().body(teacherService.list());
     }
 
-
     @PostMapping("/add_quiz")
     public ResponseEntity<ResponseStatus> addQuiz(@RequestBody Quiz quiz) {
         return ResponseEntity.ok().body(academicAdminService.addQuiz(quiz));

@@ -1,9 +1,11 @@
 package com.example.JWTSecure.controller;
 import com.example.JWTSecure.DTO.*;
+import com.example.JWTSecure.DTO.ResponseStatus;
 import com.example.JWTSecure.domain.Classes;
 import com.example.JWTSecure.domain.Course;
 import com.example.JWTSecure.service.AcademicAdminService;
 import com.example.JWTSecure.service.ClassService;
+import com.example.JWTSecure.service.StudentService;
 import com.example.JWTSecure.service.TimeTableTeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ public class CommonResource {
     private final AcademicAdminService academicAdminService;
     private final TimeTableTeacherService timeTableTeacherService;
     private final ClassService classService;
+    private final StudentService studentService;
 
     @GetMapping("/get_course")
     public ResponseEntity<List<Course>> getCourse() {
@@ -59,4 +62,8 @@ public class CommonResource {
         return ResponseEntity.ok().body(classService.getClassById(classDTO.getClass_id()));
     }
 
+    @PostMapping("/register_course")
+    public ResponseEntity<ResponseStatus> registerCourse(@RequestBody RegisterClass registerClass) {
+        return ResponseEntity.ok().body(studentService.registerCourse(registerClass));
+    }
 }

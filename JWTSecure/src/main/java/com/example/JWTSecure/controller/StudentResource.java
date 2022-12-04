@@ -30,6 +30,11 @@ public class StudentResource {
         return ResponseEntity.ok().body(studentService.getAllStudent(studentDTO));
     }
 
+    @PostMapping("/get_profile_student")
+    public ResponseEntity<StudentDTO> getProfile(@RequestBody StudentDTO studentDTO) {
+        return ResponseEntity.ok().body(studentService.getProfileStudent(studentDTO));
+    }
+
     @PutMapping("/edit_student")
     public ResponseEntity<ResponseStatus> editStudent(@RequestBody AddStudentDTO addStudentDTO) {
         return ResponseEntity.ok().body(studentService.editStudent(addStudentDTO));

@@ -1,5 +1,7 @@
 package com.example.JWTSecure.repo.impl;
 import com.example.JWTSecure.DTO.StudentDTO;
+import com.example.JWTSecure.repo.UserRepo;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
@@ -10,9 +12,13 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
+
 public class StudentCustomRepo {
     @PersistenceContext
     private EntityManager entityManager;
+
+    private final UserRepo userRepo;
 
     public List<StudentDTO> doSearchPending(StudentDTO studentDTO) {
 
@@ -25,7 +31,7 @@ public class StudentCustomRepo {
                         "join student_in_class sic on s.id = sic.student_id\n" +
                         "join class c on sic.class_id = c.id\n" +
                         "join course co on c.course_id = co.id");
-        sql.append(" WHERE 1 = 1 AND s.is_paid = false");
+        sql.append(" WHERE 1 = 1 AND sic.is_paid = false");
         if (studentDTO.getKey_search()!=null) {
             sql.append(" AND (UPPER(u.fullname) LIKE CONCAT('%', UPPER(:full_name), '%') ESCAPE '&') ");
         }
@@ -70,7 +76,7 @@ public class StudentCustomRepo {
                         "join student_in_class sic on s.id = sic.student_id\n" +
                         "join class c on sic.class_id = c.id\n" +
                         "join course co on c.course_id = co.id");
-        sql.append(" WHERE 1 = 1 AND s.is_paid = false");
+        sql.append(" WHERE 1 = 1 AND sic.is_paid = false");
         if (studentDTO.getKey_search()!=null) {
             sql.append(" AND (UPPER(u.fullname) LIKE CONCAT('%', UPPER(:full_name), '%') ESCAPE '&') ");
         }
@@ -187,11 +193,19 @@ public class StudentCustomRepo {
 
     public StudentDTO getStudent(StudentDTO studentDTO) {
 
+        if(studentDTO.getUser_name()!=null){
+            studentDTO.setUser_Id(userRepo.findByUsername(studentDTO.getUser_name()).getId());
+        }
+
         StringBuilder sql = new StringBuilder()
                 .append("select s.id as student_Id, s.user_id as user_Id, s.role_id as role_Id, \n" +
                         "u.username as user_name, u.fullname as full_name, u.email as email, u.phone as phone, u.address as address, u.active as active\n" +
                         "from student s join users u on s.user_id = u.id ");
         sql.append("WHERE 1 = 1 ");
+
+        if (studentDTO.getUser_Id() != null) {
+            sql.append(" AND s.user_id = :user_Id ");
+        }
 
         NativeQuery<StudentDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 

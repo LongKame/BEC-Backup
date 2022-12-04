@@ -43,28 +43,28 @@ public class TimeTableTeacherServiceImpl implements TimeTableTeacherService {
         }
 
         for (int i = 0; i < list.size(); i++) {
-            if (list1.get(0) == null) {
+            if (list1.get(0) == null || list1.get(0).getClass_name() == null) {
                 if (list.get(i).getSlot_of_date() == 1) {
                     list1.set(0, list.get(i));
                 } else {
                     list1.set(0, new TimeTableTeacherDTO());
                 }
             }
-            if (list1.get(1) == null) {
+            if (list1.get(1) == null || list1.get(1).getClass_name() == null) {
                 if (list.get(i).getSlot_of_date() == 2) {
                     list1.set(1, list.get(i));
                 } else {
                     list1.set(1, new TimeTableTeacherDTO());
                 }
             }
-            if (list1.get(2) == null) {
+            if (list1.get(2) == null || list1.get(2).getClass_name() == null) {
                 if (list.get(i).getSlot_of_date() == 3) {
                     list1.set(2, list.get(i));
                 } else {
                     list1.set(2, new TimeTableTeacherDTO());
                 }
             }
-            if (list1.get(3) == null) {
+            if (list1.get(3) == null || list1.get(3).getClass_name() == null) {
                 if (list.get(i).getSlot_of_date() == 4) {
                     list1.set(3, list.get(i));
                 } else {
@@ -124,52 +124,56 @@ public class TimeTableTeacherServiceImpl implements TimeTableTeacherService {
 
     @Override
     public List<TimeTableStudentDTO> getTimeTableOfStudent(TimeTableStudentDTO timeTableStudentDTO) {
-        List<TimeTableStudentDTO> list = classScheduleCustomRepo.getTimeTableForStudent(timeTableStudentDTO);
-        List<TimeTableStudentDTO> list1 = new ArrayList<>();
 
-        list1.add(0, null);
-        list1.add(1, null);
-        list1.add(2, null);
-        list1.add(3, null);
+        if(timeTableStudentDTO.getUser_name()!=null && timeTableStudentDTO.getDate_study()!=null){
+            List<TimeTableStudentDTO> list = classScheduleCustomRepo.getTimeTableForStudent(timeTableStudentDTO);
+            List<TimeTableStudentDTO> list1 = new ArrayList<>();
 
-        if (list == null || list.isEmpty()) {
-            list1.set(0, new TimeTableStudentDTO());
-            list1.set(1, new TimeTableStudentDTO());
-            list1.set(2, new TimeTableStudentDTO());
-            list1.set(3, new TimeTableStudentDTO());
+            list1.add(0, null);
+            list1.add(1, null);
+            list1.add(2, null);
+            list1.add(3, null);
+
+            if (list == null || list.isEmpty()) {
+                list1.set(0, new TimeTableStudentDTO());
+                list1.set(1, new TimeTableStudentDTO());
+                list1.set(2, new TimeTableStudentDTO());
+                list1.set(3, new TimeTableStudentDTO());
+                return list1;
+            }
+
+            for (int i = 0; i < list.size(); i++) {
+                if (list1.get(0) == null) {
+                    if (list.get(i).getSlot_of_date() == 1) {
+                        list1.set(0, list.get(i));
+                    } else {
+                        list1.set(0, new TimeTableStudentDTO());
+                    }
+                }
+                if (list1.get(1) == null) {
+                    if (list.get(i).getSlot_of_date() == 2) {
+                        list1.set(1, list.get(i));
+                    } else {
+                        list1.set(1, new TimeTableStudentDTO());
+                    }
+                }
+                if (list1.get(2) == null) {
+                    if (list.get(i).getSlot_of_date() == 3) {
+                        list1.set(2, list.get(i));
+                    } else {
+                        list1.set(2, new TimeTableStudentDTO());
+                    }
+                }
+                if (list1.get(3) == null) {
+                    if (list.get(i).getSlot_of_date() == 4) {
+                        list1.set(3, list.get(i));
+                    } else {
+                        list1.set(3, new TimeTableStudentDTO());
+                    }
+                }
+            }
             return list1;
         }
-
-        for (int i = 0; i < list.size(); i++) {
-            if (list1.get(0) == null) {
-                if (list.get(i).getSlot_of_date() == 1) {
-                    list1.set(0, list.get(i));
-                } else {
-                    list1.set(0, new TimeTableStudentDTO());
-                }
-            }
-            if (list1.get(1) == null) {
-                if (list.get(i).getSlot_of_date() == 2) {
-                    list1.set(1, list.get(i));
-                } else {
-                    list1.set(1, new TimeTableStudentDTO());
-                }
-            }
-            if (list1.get(2) == null) {
-                if (list.get(i).getSlot_of_date() == 3) {
-                    list1.set(2, list.get(i));
-                } else {
-                    list1.set(2, new TimeTableStudentDTO());
-                }
-            }
-            if (list1.get(3) == null) {
-                if (list.get(i).getSlot_of_date() == 4) {
-                    list1.set(3, list.get(i));
-                } else {
-                    list1.set(3, new TimeTableStudentDTO());
-                }
-            }
-        }
-        return list1;
+        return null;
     }
 }

@@ -23,7 +23,6 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-
 public class ClassScheduleCustomRepo {
 
     private final UserRepo userRepo;

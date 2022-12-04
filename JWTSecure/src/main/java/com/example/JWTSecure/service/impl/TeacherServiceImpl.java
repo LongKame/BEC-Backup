@@ -1,7 +1,6 @@
 package com.example.JWTSecure.service.impl;
 
 import com.example.JWTSecure.DTO.*;
-import com.example.JWTSecure.domain.Activity;
 import com.example.JWTSecure.domain.Classes;
 import com.example.JWTSecure.domain.Teacher;
 import com.example.JWTSecure.domain.User;
@@ -18,9 +17,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -74,7 +70,6 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public ResponseStatus addTeacher(AddTeacherDTO addTeacherDTO) {
-        AddTeacherDTO dto = new AddTeacherDTO();
         User user = new User();
         Teacher teacher = new Teacher();
 
@@ -110,6 +105,7 @@ public class TeacherServiceImpl implements TeacherService {
                     user.setPhone(addTeacherDTO.getPhone());
                     user.setAddress(addTeacherDTO.getAddress());
                     user.setActive(true);
+                    user.setEnabled(true);
                     userRepo.save(user);
 
                     teacher.setUserId(userRepo.findByUsername(addTeacherDTO.getUser_name()).getId());
@@ -170,8 +166,16 @@ public class TeacherServiceImpl implements TeacherService {
                         user.setEmail(userRepo.findById(addTeacherDTO.getId()).get().getEmail());
                         user.setPhone(addTeacherDTO.getPhone());
                         user.setAddress(addTeacherDTO.getAddress());
-                        user.setActive(addTeacherDTO.isActive());
+                        user.setActive(true);
+                        user.setEnabled(true);
                         userRepo.save(user);
+
+                        teacher.setId(teacherRepo.findByUserId(addTeacherDTO.getId()).getId());
+                        teacher.setUserId(addTeacherDTO.getId());
+                        teacher.setRoleId(3L);
+                        teacher.setImageUrl(addTeacherDTO.getImageUrl());
+                        teacherRepo.save(teacher);
+
                         rs.setMessage("Ok");
                         rs.setState(true);
                     }
@@ -186,8 +190,16 @@ public class TeacherServiceImpl implements TeacherService {
                         user.setEmail(userRepo.findById(addTeacherDTO.getId()).get().getEmail());
                         user.setPhone(addTeacherDTO.getPhone());
                         user.setAddress(addTeacherDTO.getAddress());
-                        user.setActive(addTeacherDTO.isActive());
+                        user.setActive(true);
+                        user.setEnabled(true);
                         userRepo.save(user);
+
+                        teacher.setId(teacherRepo.findByUserId(addTeacherDTO.getId()).getId());
+                        teacher.setUserId(addTeacherDTO.getId());
+                        teacher.setRoleId(3L);
+                        teacher.setImageUrl(addTeacherDTO.getImageUrl());
+                        teacherRepo.save(teacher);
+
                         rs.setMessage("Ok");
                         rs.setState(true);
                     }
@@ -204,23 +216,70 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public ResponseStatus createAct(Activity activity) {
-        ResponseStatus responseStatus = new ResponseStatus();
+    public ResponseStatus editTeacherByTeacher(AddTeacherDTO addTeacherDTO) {
+        User user = new User();
+        Teacher teacher = new Teacher();
+        ResponseStatus rs = new ResponseStatus();
+        StringBuilder message = new StringBuilder();
         try {
-            String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-            LocalDateTime localDateTime = LocalDateTime.parse(timeStamp, formatter);
-            activity.setCreatedAt(localDateTime);
-            activity.setUpdatedAt(localDateTime);
-            activityRepo.save(activity);
-            responseStatus.setMessage("Ok");
-            responseStatus.setState(true);
-            return responseStatus;
-        } catch (Exception e) {
-            responseStatus.setMessage("Failure");
-            responseStatus.setState(false);
-            return responseStatus;
+            if (addTeacherDTO != null) {
+                if (userRepo.findById(addTeacherDTO.getUser_Id()).get().getUsername().equals(addTeacherDTO.getUser_name())) {
+                    user.setId(addTeacherDTO.getUser_Id());
+                    String username = userRepo.findById(addTeacherDTO.getUser_Id()).get().getUsername();
+                    user.setUsername(username);
+                    user.setFullname(addTeacherDTO.getFull_name());
+                    user.setPassword(userRepo.findById(addTeacherDTO.getUser_Id()).get().getPassword());
+                    user.setEmail(userRepo.findById(addTeacherDTO.getUser_Id()).get().getEmail());
+                    user.setPhone(addTeacherDTO.getPhone());
+                    user.setAddress(addTeacherDTO.getAddress());
+                    user.setActive(true);
+                    user.setEnabled(true);
+                    userRepo.save(user);
+                    teacher.setId(teacherRepo.findByUserId(addTeacherDTO.getUser_Id()).getId());
+                    teacher.setUserId(addTeacherDTO.getUser_Id());
+                    teacher.setRoleId(3L);
+                    teacher.setImageUrl(addTeacherDTO.getImageUrl());
+                    teacherRepo.save(teacher);
+                    rs.setMessage("Ok");
+                    rs.setState(true);
+                    return rs;
+                }
+
+                if (userRepo.findByUsername(addTeacherDTO.getUser_name()) == null) {
+                    user.setId(addTeacherDTO.getUser_Id());
+                    user.setUsername(addTeacherDTO.getUser_name());
+                    user.setFullname(addTeacherDTO.getFull_name());
+                    user.setPassword(userRepo.findById(addTeacherDTO.getUser_Id()).get().getPassword());
+                    user.setEmail(userRepo.findById(addTeacherDTO.getUser_Id()).get().getEmail());
+                    user.setPhone(addTeacherDTO.getPhone());
+                    user.setAddress(addTeacherDTO.getAddress());
+                    user.setActive(true);
+                    user.setEnabled(true);
+                    userRepo.save(user);
+                    teacher.setId(teacherRepo.findByUserId(addTeacherDTO.getUser_Id()).getId());
+                    teacher.setUserId(addTeacherDTO.getUser_Id());
+                    teacher.setRoleId(3L);
+                    teacher.setImageUrl(addTeacherDTO.getImageUrl());
+                    teacherRepo.save(teacher);
+                    rs.setMessage("Ok");
+                    rs.setState(true);
+                    return rs;
+                }
+
+                if (userRepo.findByUsername(addTeacherDTO.getUser_name()) != null) {
+                    message.append("Username ");
+                }
+                if (!StringUtils.isBlank(message)) {
+                    message.append("is existed");
+                    rs.setMessage(message.toString());
+                    rs.setState(false);
+                    return rs;
+                }
+            }
+        } catch (Exception ex) {
+
         }
+        return null;
     }
 
     @Override
@@ -297,8 +356,20 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public TimeTableDTO getAllTimetableByTeacher(Long id) {
-
         return null;
+    }
+
+    @Override
+    public TeacherDTO getProfileTeacher(TeacherDTO teacherDTO) {
+        if (teacherDTO.getUser_name() != null) {
+            try {
+                return teacherCustomRepo.getTeacher(teacherDTO);
+            } catch (Exception ex) {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
 }

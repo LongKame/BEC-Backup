@@ -62,9 +62,14 @@ public class TeacherResource {
         return ResponseEntity.ok().body(academicAdminService.getCourse());
     }
 
-    @PutMapping("/edit_profile")
+    @PutMapping("/edit_profile_teacher")
     public ResponseEntity<ResponseStatus> editTeacher(@RequestBody AddTeacherDTO addTeacherDTO) {
-        return ResponseEntity.ok().body(teacherService.editTeacher(addTeacherDTO));
+        return ResponseEntity.ok().body(teacherService.editTeacherByTeacher(addTeacherDTO));
+    }
+
+    @PostMapping("/get_profile_teacher")
+    public ResponseEntity<TeacherDTO> getProfile(@RequestBody TeacherDTO teacherDTO) {
+        return ResponseEntity.ok().body(teacherService.getProfileTeacher(teacherDTO));
     }
 
     @GetMapping("/view_profile")
@@ -86,5 +91,4 @@ public class TeacherResource {
     public ResponseEntity<TimeTableDTO> getAllTimetableByTeacher(@RequestBody Classes classes) {
         return ResponseEntity.ok().body(teacherService.getAllTimetableByTeacher(classes.getId()));
     }
-
 }

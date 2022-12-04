@@ -1,5 +1,4 @@
 package com.example.JWTSecure.service.impl;
-
 import com.example.JWTSecure.DTO.*;
 import com.example.JWTSecure.domain.Curriculum;
 import com.example.JWTSecure.domain.Student;
@@ -208,7 +207,6 @@ public class StudentServiceImpl implements StudentService {
         return rs;
     }
 
-
     @Override
     public ResponseStatus editStudent(AddStudentDTO addStudentDTO) {
         User user = new User();
@@ -327,6 +325,13 @@ public class StudentServiceImpl implements StudentService {
     public ResponseStatus registerCourse(RegisterClass registerClass) {
         ResponseStatus responseStatus = new ResponseStatus();
         StudentInClass studentInClass = new StudentInClass();
+
+        if(registerClass.getUsername()==null){
+            responseStatus.setMessage("You need login as Student");
+            responseStatus.setState(false);
+            return responseStatus;
+        }
+
         Long userId = userRepo.findByUsername(registerClass.getUsername()).getId();
         Long studentId = studentRepo.findByUserId(userId).getId();
         try {
@@ -353,5 +358,37 @@ public class StudentServiceImpl implements StudentService {
         return responseStatus;
     }
 
+    @Override
+    public ResponseStatus updateActiveStudent(Long user_id) {
+        ResponseStatus responseStatus = new ResponseStatus();
+        try {
+            if (user_id != null) {
+                userRepo.deactive(user_id);
+                responseStatus.setState(true);
+                responseStatus.setMessage("Success");
+            } else {
+                responseStatus.setState(false);
+                responseStatus.setMessage("Failure");
+            }
+            return responseStatus;
+        } catch (Exception e) {
+            responseStatus.setState(false);
+            responseStatus.setMessage("Failure");
+            return responseStatus;
+        }
+    }
+
+    @Override
+    public StudentDTO getProfileStudent(StudentDTO studentDTO) {
+        if(studentDTO.getUser_name()!=null){
+            try{
+                return studentCustomRepo.getStudent(studentDTO);
+            }catch (Exception ex){
+                return null;
+            }
+        }else {
+            return null;
+        }
+    }
 }
 

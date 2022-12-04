@@ -1,13 +1,9 @@
 package com.example.JWTSecure.service;
 import com.example.JWTSecure.DTO.*;
 import com.example.JWTSecure.domain.Curriculum;
-import com.example.JWTSecure.domain.StudentInClass;
-
 import java.util.List;
 
-
 public interface StudentService {
-
     StudentDTO getStudent(StudentDTO studentDTO);
     SearchResultDTO<StudentDTO> getAllStudent(StudentDTO studentDTO);
     SearchResultDTO<StudentDTO> getStudentPending(StudentDTO studentDTO);
@@ -19,4 +15,6 @@ public interface StudentService {
     ResponseStatus deletePending(Long id);
     ResponseStatus addCurriculum(Curriculum curriculum);
     ResponseStatus registerCourse(RegisterClass registerClasss);
+    ResponseStatus updateActiveStudent(Long user_id);
+    StudentDTO getProfileStudent(StudentDTO studentDTO);
 }

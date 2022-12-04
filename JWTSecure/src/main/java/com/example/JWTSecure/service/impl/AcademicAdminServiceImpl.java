@@ -340,7 +340,8 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
                 course.setId(courseDTO.getId());
                 course.setLevelId(courseDTO.getLevelId());
                 course.setName(courseDTO.getCourse_name());
-                course.setCreatedAt(courseRepo.findById(courseDTO.getId()).get().getUpdatedAt());
+                course.setFee(courseDTO.getFee());
+                course.setCreatedAt(courseRepo.findById(courseDTO.getId()).get().getCreatedAt());
                 String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
                 LocalDateTime localDateTime = LocalDateTime.parse(timeStamp, formatter);
