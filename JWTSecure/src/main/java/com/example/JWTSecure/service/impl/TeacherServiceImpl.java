@@ -8,12 +8,12 @@ import com.example.JWTSecure.repo.*;
 import com.example.JWTSecure.repo.impl.TeacherCustomRepo;
 import com.example.JWTSecure.repo.impl.TimeTableCustomRepo;
 import com.example.JWTSecure.service.TeacherService;
+import com.example.JWTSecure.validate.EmailValidator;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -30,10 +30,9 @@ public class TeacherServiceImpl implements TeacherService {
     private final TeacherRepo teacherRepo;
     private final UserRepo userRepo;
     private final TeacherCustomRepo teacherCustomRepo;
-    private final ActivityRepo activityRepo;
     private final ClassRepo classRepo;
     private final TimeTableCustomRepo timeTableCustomRepo;
-    private final ClassScheduleRepo classScheduleRepo;
+    private final EmailValidator emailValidator;
 
     public SearchResultDTO<TeacherDTO> getAllTeacher(TeacherDTO productDTO) {
         List<TeacherDTO> dataResult;
@@ -75,6 +74,15 @@ public class TeacherServiceImpl implements TeacherService {
 
         ResponseStatus rs = new ResponseStatus();
         StringBuilder message = new StringBuilder();
+
+        boolean isValidEmail = emailValidator.test(addTeacherDTO.getEmail());
+        if(!isValidEmail){
+            message.append("Email is not valid");
+            rs.setMessage(message.toString());
+            rs.setState(false);
+            return rs;
+        }
+
         try {
             if (addTeacherDTO != null) {
 
@@ -142,6 +150,14 @@ public class TeacherServiceImpl implements TeacherService {
         Teacher teacher = new Teacher();
         ResponseStatus rs = new ResponseStatus();
         StringBuilder message = new StringBuilder();
+
+        boolean isValidEmail = emailValidator.test(addTeacherDTO.getEmail());
+        if(!isValidEmail){
+            message.append("Email is not valid");
+            rs.setMessage(message.toString());
+            rs.setState(false);
+            return rs;
+        }
 
         if (addTeacherDTO != null) {
             if (userRepo.findByUsername(addTeacherDTO.getUser_name()) != null) {

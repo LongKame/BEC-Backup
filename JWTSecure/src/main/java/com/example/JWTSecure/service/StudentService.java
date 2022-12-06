@@ -17,4 +17,5 @@ public interface StudentService {
     ResponseStatus registerCourse(RegisterClass registerClasss);
     ResponseStatus updateActiveStudent(Long user_id);
     StudentDTO getProfileStudent(StudentDTO studentDTO);
+    ResponseStatus editStudentByStudent(StudentDTO studentDTO);
 }

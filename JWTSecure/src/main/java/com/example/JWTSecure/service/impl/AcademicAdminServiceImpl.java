@@ -5,11 +5,13 @@ import com.example.JWTSecure.domain.*;
 import com.example.JWTSecure.repo.*;
 import com.example.JWTSecure.repo.impl.*;
 import com.example.JWTSecure.service.AcademicAdminService;
+import com.example.JWTSecure.validate.EmailValidator;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -27,7 +29,6 @@ import java.util.List;
 public class AcademicAdminServiceImpl implements AcademicAdminService {
 
     private final PasswordEncoder passwordEncoder;
-    private final StudentRepo studentRepo;
     private final AcademicAdminRepo academicAdminRepo;
     private final QuizRepo quizRepo;
     private final CourseRepo courseRepo;
@@ -37,10 +38,10 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
     private final QuizCustomRepo quizCustomRepo;
     private final RoomCustomRepo roomCustomRepo;
     private final ClassCustomRepo classCustomRepo;
-    private final ClassRepo classRepo;
     private final RoomRepo roomRepo;
     private final CurriculumRepo curriculumRepo;
     private final CurriculumCustomRepo curriculumCustomRepo;
+    private final EmailValidator emailValidator;
 
     @Override
     public List<Quiz> getQuiz(Long levelId) {
@@ -198,6 +199,14 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
         ResponseStatus rs = new ResponseStatus();
         StringBuilder message = new StringBuilder();
 
+        boolean isValidEmail = emailValidator.test(addAcademicAdminDTO.getEmail());
+        if (!isValidEmail) {
+            message.append("Email is not valid");
+            rs.setMessage(message.toString());
+            rs.setState(false);
+            return rs;
+        }
+
         if (addAcademicAdminDTO != null) {
             if (userRepo.findByUsername(addAcademicAdminDTO.getUser_name()) != null) {
                 message.append("Username ");
@@ -244,15 +253,18 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
     }
 
     @Override
-    public AcademicAdminDTO viewProfile(AcademicAdminDTO academicAdminDTO) {
-        return null;
-    }
-
-    @Override
     public ResponseStatus editAcad(AddAcademicAdminDTO addAcademicAdminDTO) {
         User user = new User();
         ResponseStatus rs = new ResponseStatus();
         StringBuilder message = new StringBuilder();
+
+        boolean isValidEmail = emailValidator.test(addAcademicAdminDTO.getEmail());
+        if (!isValidEmail) {
+            message.append("Email is not valid");
+            rs.setMessage(message.toString());
+            rs.setState(false);
+            return rs;
+        }
 
         if (addAcademicAdminDTO != null) {
             if (userRepo.findByUsername(addAcademicAdminDTO.getUser_name()) != null) {
@@ -514,6 +526,93 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
             searchResult.setResultData(Collections.emptyList());
             searchResult.setTotalRecordNoLimit(0);
             return searchResult;
+        }
+    }
+
+    @Override
+    public ResponseStatus editAcaByAca(AcademicAdminDTO academicAdminDTO) {
+        User user = new User();
+        AcademicAdmin academicAdmin = new AcademicAdmin();
+        ResponseStatus rs = new ResponseStatus();
+        StringBuilder message = new StringBuilder();
+        try {
+            if (academicAdminDTO != null) {
+                if (userRepo.findById(academicAdminDTO.getUser_Id()).get().getUsername().equals(academicAdminDTO.getUser_name())) {
+                    user.setId(academicAdminDTO.getUser_Id());
+                    String username = userRepo.findById(academicAdminDTO.getUser_Id()).get().getUsername();
+                    user.setUsername(username);
+                    user.setFullname(academicAdminDTO.getFull_name());
+                    user.setPassword(userRepo.findById(academicAdminDTO.getUser_Id()).get().getPassword());
+                    user.setEmail(userRepo.findById(academicAdminDTO.getUser_Id()).get().getEmail());
+                    user.setPhone(academicAdminDTO.getPhone());
+                    user.setAddress(academicAdminDTO.getAddress());
+                    user.setActive(true);
+                    user.setEnabled(true);
+                    userRepo.save(user);
+                    academicAdmin.setId(academicAdminRepo.findByUserId(academicAdminDTO.getUser_Id()).getId());
+                    academicAdmin.setUserId(academicAdminDTO.getUser_Id());
+                    academicAdmin.setRoleId(2L);
+                    academicAdminRepo.save(academicAdmin);
+                    rs.setMessage("Ok");
+                    rs.setState(true);
+                    return rs;
+                }
+
+                if (userRepo.findByUsername(academicAdminDTO.getUser_name()) == null) {
+                    user.setId(academicAdminDTO.getUser_Id());
+                    user.setUsername(academicAdminDTO.getUser_name());
+                    user.setFullname(academicAdminDTO.getFull_name());
+                    user.setPassword(userRepo.findById(academicAdminDTO.getUser_Id()).get().getPassword());
+                    user.setEmail(userRepo.findById(academicAdminDTO.getUser_Id()).get().getEmail());
+                    user.setPhone(academicAdminDTO.getPhone());
+                    user.setAddress(academicAdminDTO.getAddress());
+                    user.setActive(true);
+                    user.setEnabled(true);
+                    userRepo.save(user);
+                    academicAdmin.setId(academicAdminRepo.findByUserId(academicAdminDTO.getUser_Id()).getId());
+                    academicAdmin.setUserId(academicAdminDTO.getUser_Id());
+                    academicAdmin.setRoleId(3L);
+                    academicAdminRepo.save(academicAdmin);
+                    rs.setMessage("Ok");
+                    rs.setState(true);
+                    return rs;
+                }
+
+                if (userRepo.findByUsername(academicAdminDTO.getUser_name()) != null) {
+                    message.append("Username ");
+                }
+                if (!StringUtils.isBlank(message)) {
+                    message.append("is existed");
+                    rs.setMessage(message.toString());
+                    rs.setState(false);
+                    return rs;
+                }
+            }
+        } catch (Exception ex) {
+
+        }
+        return null;
+    }
+
+    @Override
+    public AcademicAdminDTO getProfileAca(AcademicAdminDTO academicAdminDTO) {
+        if (academicAdminDTO.getUser_name() != null) {
+            try {
+                return academicAdminCustomRepo.getAca(academicAdminDTO);
+            } catch (Exception ex) {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<CurriculumDTO> viewCurriculum() {
+        try {
+            return academicAdminCustomRepo.getCurriculum();
+        } catch (Exception ex) {
+            return null;
         }
     }
 

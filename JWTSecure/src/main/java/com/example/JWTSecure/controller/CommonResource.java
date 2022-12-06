@@ -3,6 +3,7 @@ import com.example.JWTSecure.DTO.*;
 import com.example.JWTSecure.DTO.ResponseStatus;
 import com.example.JWTSecure.domain.Classes;
 import com.example.JWTSecure.domain.Course;
+import com.example.JWTSecure.domain.Curriculum;
 import com.example.JWTSecure.service.AcademicAdminService;
 import com.example.JWTSecure.service.ClassService;
 import com.example.JWTSecure.service.StudentService;
@@ -25,6 +26,11 @@ public class CommonResource {
     @GetMapping("/get_course")
     public ResponseEntity<List<Course>> getCourse() {
         return ResponseEntity.ok().body(academicAdminService.getCourse());
+    }
+
+    @GetMapping("/view_curriculum")
+    public ResponseEntity<List<CurriculumDTO>> getCurriculum() {
+        return ResponseEntity.ok().body(academicAdminService.viewCurriculum());
     }
 
     @PostMapping("/get_course_by_id")
@@ -65,5 +71,15 @@ public class CommonResource {
     @PostMapping("/register_course")
     public ResponseEntity<ResponseStatus> registerCourse(@RequestBody RegisterClass registerClass) {
         return ResponseEntity.ok().body(studentService.registerCourse(registerClass));
+    }
+
+    @PostMapping("/get_profile_student")
+    public ResponseEntity<StudentDTO> getProfile(@RequestBody StudentDTO studentDTO) {
+        return ResponseEntity.ok().body(studentService.getProfileStudent(studentDTO));
+    }
+
+    @PutMapping("/edit_profile_student")
+    public ResponseEntity<ResponseStatus> editTeacher(@RequestBody StudentDTO studentDTO) {
+        return ResponseEntity.ok().body(studentService.editStudentByStudent(studentDTO));
     }
 }

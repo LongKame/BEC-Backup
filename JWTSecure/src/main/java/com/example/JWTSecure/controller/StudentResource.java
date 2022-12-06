@@ -35,6 +35,11 @@ public class StudentResource {
         return ResponseEntity.ok().body(studentService.getProfileStudent(studentDTO));
     }
 
+    @PutMapping("/edit_profile_student")
+    public ResponseEntity<ResponseStatus> editTeacher(@RequestBody StudentDTO studentDTO) {
+        return ResponseEntity.ok().body(studentService.editStudentByStudent(studentDTO));
+    }
+
     @PutMapping("/edit_student")
     public ResponseEntity<ResponseStatus> editStudent(@RequestBody AddStudentDTO addStudentDTO) {
         return ResponseEntity.ok().body(studentService.editStudent(addStudentDTO));
@@ -49,4 +54,5 @@ public class StudentResource {
     public ResponseEntity<ResponseStatus> registerCourse(@RequestBody RegisterClass registerClass) {
         return ResponseEntity.ok().body(studentService.registerCourse(registerClass));
     }
+
 }

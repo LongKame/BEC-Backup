@@ -1,6 +1,5 @@
 package com.example.JWTSecure.repo.impl;
 import com.example.JWTSecure.DTO.TeacherDTO;
-import com.example.JWTSecure.repo.TeacherRepo;
 import com.example.JWTSecure.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
@@ -18,7 +17,6 @@ public class TeacherCustomRepo {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private final TeacherRepo teacherRepo;
     private final UserRepo userRepo;
 
     public List<TeacherDTO> doSearch(TeacherDTO teacherDTO) {

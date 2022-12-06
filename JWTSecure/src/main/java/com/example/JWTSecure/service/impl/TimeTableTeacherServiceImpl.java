@@ -86,7 +86,7 @@ public class TimeTableTeacherServiceImpl implements TimeTableTeacherService {
         LinkedHashSet<String> hashSet = new LinkedHashSet<String>();
 
         for (int i = 0; i < 12; i++) {
-            YearMonth ym = YearMonth.of(2022, month[i]);
+            YearMonth ym = YearMonth.of(2023, month[i]);
             LocalDate firstOfMonth = ym.atDay(1);
             TemporalAdjuster ta = TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY);
             LocalDate previousOrSameMonday = firstOfMonth.with(ta);
@@ -94,7 +94,7 @@ public class TimeTableTeacherServiceImpl implements TimeTableTeacherService {
             LocalDate weekStart = previousOrSameMonday;
             do {
                 LocalDate weekStop = weekStart.plusDays(6);
-                if (weekStart.getYear() == 2022 && weekStop.getYear() == 2022) {
+                if (weekStart.getYear() == 2023 && weekStop.getYear() == 2023) {
                     String dayOfWeekStart = String.valueOf(weekStart.getDayOfMonth());
                     String monthOfWeekStart = String.valueOf(weekStart.getMonthValue());
                     String dayOfWeekStop = String.valueOf(weekStop.getDayOfMonth());

@@ -21,6 +21,16 @@ public class AcademicAdminResource {
     private final SlotService slotService;
     private final TeacherService teacherService;
 
+    @PutMapping("/edit_profile_aca")
+    public ResponseEntity<ResponseStatus> editTeacher(@RequestBody AcademicAdminDTO academicAdminDTO) {
+        return ResponseEntity.ok().body(academicAdminService.editAcaByAca(academicAdminDTO));
+    }
+
+    @PostMapping("/get_profile_aca")
+    public ResponseEntity<AcademicAdminDTO> getProfile(@RequestBody AcademicAdminDTO academicAdminDTO) {
+        return ResponseEntity.ok().body(academicAdminService.getProfileAca(academicAdminDTO));
+    }
+
     @GetMapping("/get_slot")
     public ResponseEntity<List<Slot>> getSlot() {
         return ResponseEntity.ok().body(slotService.getSlot());
