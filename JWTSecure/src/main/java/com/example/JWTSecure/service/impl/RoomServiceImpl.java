@@ -7,7 +7,6 @@ import com.example.JWTSecure.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -58,6 +57,7 @@ public class RoomServiceImpl implements RoomService {
         boolean check = true;
         try {
             if (room != null) {
+
                 if (roomRepo.findById(room.getId()).get().getRoomname().equals(room.getRoomname())) {
                     room.setCreatedAt(roomRepo.findById(room.getId()).get().getCreatedAt());
                     room.setUpdatedAt(localDateTime);
@@ -72,6 +72,7 @@ public class RoomServiceImpl implements RoomService {
                     roomRepo.save(room);
                     responseStatus.setState(true);
                     responseStatus.setMessage("Success");
+                    return responseStatus;
                 }
                 if (roomRepo.findByRoomname(room.getRoomname()) != null) {
                     room.setCreatedAt(roomRepo.findById(room.getId()).get().getCreatedAt());
@@ -79,6 +80,7 @@ public class RoomServiceImpl implements RoomService {
                     roomRepo.save(room);
                     responseStatus.setState(false);
                     responseStatus.setMessage("Room is existed.");
+                    return responseStatus;
                 }
             } else {
                 responseStatus.setState(false);

@@ -22,6 +22,11 @@ public class CommonResource {
     private final ClassService classService;
     private final StudentService studentService;
 
+    @GetMapping("/get_class")
+    public ResponseEntity<List<Classes>> getClass1() {
+        return ResponseEntity.ok().body(academicAdminService.getClasses());
+    }
+
     @GetMapping("/get_course")
     public ResponseEntity<List<Course>> getCourse() {
         return ResponseEntity.ok().body(academicAdminService.getCourse());
