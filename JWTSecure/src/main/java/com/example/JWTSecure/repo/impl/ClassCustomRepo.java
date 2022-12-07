@@ -238,9 +238,9 @@ public class ClassCustomRepo {
             if(classDTO.getFirstOnWeek() != null){
                 sql.append(" AND cs.first_of_week = :first_of_week ");
             }
-            if(classDTO.getSecondOnWeek() != null){
-                sql.append(" AND cs.second_of_week = :second_of_week ");
-            }
+//            if(classDTO.getSecondOnWeek() != null){
+//                sql.append(" AND cs.second_of_week = :second_of_week ");
+//            }
             if(classDTO.isActive()){
                 sql.append(" AND c.active = :active ");
             }
@@ -256,9 +256,9 @@ public class ClassCustomRepo {
             if(classDTO.getFirstOnWeek() != null){
                 query.setParameter("first_of_week", classDTO.getFirstOnWeek().getValue());
             }
-            if(classDTO.getSecondOnWeek() != null){
-                query.setParameter("second_of_week", classDTO.getSecondOnWeek().getValue());
-            }
+//            if(classDTO.getSecondOnWeek() != null){
+//                query.setParameter("second_of_week", classDTO.getSecondOnWeek().getValue());
+//            }
             if(classDTO.isActive()){
                 query.setParameter("active", classDTO.isActive());
             }
@@ -291,9 +291,9 @@ public class ClassCustomRepo {
             if(classDTO.getFirstOnWeek() != null){
                 sql.append(" AND cs.first_of_week = :first_of_week ");
             }
-            if(classDTO.getSecondOnWeek() != null){
-                sql.append(" AND cs.second_of_week = :second_of_week ");
-            }
+//            if(classDTO.getSecondOnWeek() != null){
+//                sql.append(" AND cs.second_of_week = :second_of_week ");
+//            }
             if(classDTO.isActive()){
                 sql.append(" AND c.active = :active ");
             }
@@ -309,9 +309,9 @@ public class ClassCustomRepo {
             if(classDTO.getFirstOnWeek() != null){
                 query.setParameter("first_of_week", classDTO.getFirstOnWeek().getValue());
             }
-            if(classDTO.getSecondOnWeek() != null){
-                query.setParameter("second_of_week", classDTO.getSecondOnWeek().getValue());
-            }
+//            if(classDTO.getSecondOnWeek() != null){
+//                query.setParameter("second_of_week", classDTO.getSecondOnWeek().getValue());
+//            }
             if(classDTO.isActive()){
                 query.setParameter("active", classDTO.isActive());
             }
@@ -332,4 +332,3 @@ public class ClassCustomRepo {
     }
 
 }
-
