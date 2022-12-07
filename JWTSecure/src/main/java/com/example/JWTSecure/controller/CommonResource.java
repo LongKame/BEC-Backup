@@ -3,7 +3,6 @@ import com.example.JWTSecure.DTO.*;
 import com.example.JWTSecure.DTO.ResponseStatus;
 import com.example.JWTSecure.domain.Classes;
 import com.example.JWTSecure.domain.Course;
-import com.example.JWTSecure.domain.Curriculum;
 import com.example.JWTSecure.service.AcademicAdminService;
 import com.example.JWTSecure.service.ClassService;
 import com.example.JWTSecure.service.StudentService;

@@ -1,8 +1,6 @@
 package com.example.JWTSecure.repo.impl;
-
 import com.example.JWTSecure.DTO.ClassDTO;
 import com.example.JWTSecure.DTO.ClassScheduleDTO;
-import com.example.JWTSecure.DTO.StudentDTO;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
