@@ -20,6 +20,36 @@ public class AdminResource {
     private final StudentService studentService;
     private final SlotService slotService;
 
+
+    @PutMapping("/update_slot")
+    public ResponseEntity<ResponseStatus> updateSlot(ChangeSlotDTO changeSlotDTO) {
+        return ResponseEntity.ok().body(slotService.updateSlot(changeSlotDTO));
+    }
+/*
+class_id: 56
+class_schedule_id: 291
+date: "04-01-2023"
+room_id: 7
+slot_of_date: 3
+slot_th: 1
+teacher_id: 31
+ */
+    @GetMapping("/get_rooms")
+    public ResponseEntity<List<Room>> getRoom() {
+        return ResponseEntity.ok().body(academicAdminService.getRooms());
+    }
+
+    @GetMapping("/get_teachers")
+    public ResponseEntity<List<TeacherDTO>> getTeacher() {
+        return ResponseEntity.ok().body(teacherService.list());
+    }
+
+
+    @PostMapping("/get_all_class_by_id")
+    public ResponseEntity<List<ClassScheduleDTO>> getClassesById(@RequestBody ClassDTO classDTO) {
+        return ResponseEntity.ok().body(classService.getClassById(classDTO.getClass_id()));
+    }
+
     @GetMapping("/get_slot")
     public ResponseEntity<List<Slot>> getSlot() {
         return ResponseEntity.ok().body(slotService.getSlot());

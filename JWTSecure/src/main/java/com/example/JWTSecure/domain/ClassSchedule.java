@@ -1,5 +1,4 @@
 package com.example.JWTSecure.domain;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

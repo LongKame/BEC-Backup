@@ -35,8 +35,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private AdminRepo adminRepo;
     @Autowired
-    private GuestRepo guestRepo;
-    @Autowired
     private StudentRepo studentRepo;
     @Autowired
     private TeacherRepo teacherRepo;

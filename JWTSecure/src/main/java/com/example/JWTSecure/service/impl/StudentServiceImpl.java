@@ -1,9 +1,6 @@
 package com.example.JWTSecure.service.impl;
 import com.example.JWTSecure.DTO.*;
-import com.example.JWTSecure.domain.Curriculum;
-import com.example.JWTSecure.domain.Student;
-import com.example.JWTSecure.domain.StudentInClass;
-import com.example.JWTSecure.domain.User;
+import com.example.JWTSecure.domain.*;
 import com.example.JWTSecure.repo.CurriculumRepo;
 import com.example.JWTSecure.repo.StudentInClassRepo;
 import com.example.JWTSecure.repo.StudentRepo;
@@ -282,7 +279,7 @@ public class StudentServiceImpl implements StudentService {
         ResponseStatus responseStatus = new ResponseStatus();
         try {
             if (id != null) {
-                studentRepo.updatePending(id);
+                studentInClassRepo.updatePending(id);
                 responseStatus.setState(true);
                 responseStatus.setMessage("Success");
             } else {
@@ -325,9 +322,18 @@ public class StudentServiceImpl implements StudentService {
     public ResponseStatus registerCourse(RegisterClass registerClass) {
         ResponseStatus responseStatus = new ResponseStatus();
         StudentInClass studentInClass = new StudentInClass();
+        StudentInClass sic = new StudentInClass();
 
         if(registerClass.getUsername()==null){
             responseStatus.setMessage("You need login as Student");
+            responseStatus.setState(false);
+            return responseStatus;
+        }
+
+        Long student_Id = studentRepo.findByUserId(userRepo.findUserByUsername(registerClass.getUsername()).getId()).getId();
+
+        if(studentInClassRepo.findStudentInClassByStudentId(student_Id)!=null){
+            responseStatus.setMessage("You registered other course");
             responseStatus.setState(false);
             return responseStatus;
         }
@@ -389,6 +395,72 @@ public class StudentServiceImpl implements StudentService {
         }else {
             return null;
         }
+    }
+
+    @Override
+    public ResponseStatus editStudentByStudent(StudentDTO studentDTO) {
+        User user = new User();
+        Student student = new Student();
+        ResponseStatus rs = new ResponseStatus();
+        StringBuilder message = new StringBuilder();
+
+        try {
+            if (studentDTO != null) {
+                if (userRepo.findById(studentDTO.getUser_Id()).get().getUsername().equals(studentDTO.getUser_name())) {
+                    user.setId(studentDTO.getUser_Id());
+                    String username = userRepo.findById(studentDTO.getUser_Id()).get().getUsername();
+                    user.setUsername(username);
+                    user.setFullname(studentDTO.getFull_name());
+                    user.setPassword(userRepo.findById(studentDTO.getUser_Id()).get().getPassword());
+                    user.setEmail(userRepo.findById(studentDTO.getUser_Id()).get().getEmail());
+                    user.setPhone(studentDTO.getPhone());
+                    user.setAddress(studentDTO.getAddress());
+                    user.setActive(true);
+                    user.setEnabled(true);
+                    userRepo.save(user);
+                    student.setId(studentRepo.findByUserId(studentDTO.getUser_Id()).getId());
+                    student.setUserId(studentDTO.getUser_Id());
+                    student.setRoleId(4L);
+                    studentRepo.save(student);
+                    rs.setMessage("Ok");
+                    rs.setState(true);
+                    return rs;
+                }
+
+                if (userRepo.findByUsername(studentDTO.getUser_name()) == null) {
+                    user.setId(studentDTO.getUser_Id());
+                    user.setUsername(studentDTO.getUser_name());
+                    user.setFullname(studentDTO.getFull_name());
+                    user.setPassword(userRepo.findById(studentDTO.getUser_Id()).get().getPassword());
+                    user.setEmail(userRepo.findById(studentDTO.getUser_Id()).get().getEmail());
+                    user.setPhone(studentDTO.getPhone());
+                    user.setAddress(studentDTO.getAddress());
+                    user.setActive(true);
+                    user.setEnabled(true);
+                    userRepo.save(user);
+                    student.setId(studentRepo.findByUserId(studentDTO.getUser_Id()).getId());
+                    student.setUserId(studentDTO.getUser_Id());
+                    student.setRoleId(3L);
+                    studentRepo.save(student);
+                    rs.setMessage("Ok");
+                    rs.setState(true);
+                    return rs;
+                }
+
+                if (userRepo.findByUsername(studentDTO.getUser_name()) != null) {
+                    message.append("Username ");
+                }
+                if (!StringUtils.isBlank(message)) {
+                    message.append("is existed");
+                    rs.setMessage(message.toString());
+                    rs.setState(false);
+                    return rs;
+                }
+            }
+        } catch (Exception ex) {
+
+        }
+        return null;
     }
 }
 

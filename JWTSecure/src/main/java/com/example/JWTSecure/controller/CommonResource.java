@@ -3,10 +3,9 @@ import com.example.JWTSecure.DTO.*;
 import com.example.JWTSecure.DTO.ResponseStatus;
 import com.example.JWTSecure.domain.Classes;
 import com.example.JWTSecure.domain.Course;
-import com.example.JWTSecure.service.AcademicAdminService;
-import com.example.JWTSecure.service.ClassService;
-import com.example.JWTSecure.service.StudentService;
-import com.example.JWTSecure.service.TimeTableTeacherService;
+import com.example.JWTSecure.domain.Curriculum;
+import com.example.JWTSecure.domain.Room;
+import com.example.JWTSecure.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +20,23 @@ public class CommonResource {
     private final TimeTableTeacherService timeTableTeacherService;
     private final ClassService classService;
     private final StudentService studentService;
+    private final TeacherService teacherService;
+    private final SlotService slotService;
+
 
     @GetMapping("/get_course")
     public ResponseEntity<List<Course>> getCourse() {
         return ResponseEntity.ok().body(academicAdminService.getCourse());
+    }
+
+    @PutMapping("/update_slot")
+    public ResponseEntity<ResponseStatus> updateSlot(ChangeSlotDTO changeSlotDTO) {
+        return ResponseEntity.ok().body(slotService.updateSlot(changeSlotDTO));
+    }
+
+    @GetMapping("/view_curriculum")
+    public ResponseEntity<List<CurriculumDTO>> getCurriculum() {
+        return ResponseEntity.ok().body(academicAdminService.viewCurriculum());
     }
 
     @PostMapping("/get_course_by_id")
@@ -65,5 +77,15 @@ public class CommonResource {
     @PostMapping("/register_course")
     public ResponseEntity<ResponseStatus> registerCourse(@RequestBody RegisterClass registerClass) {
         return ResponseEntity.ok().body(studentService.registerCourse(registerClass));
+    }
+
+    @PostMapping("/get_profile_student")
+    public ResponseEntity<StudentDTO> getProfile(@RequestBody StudentDTO studentDTO) {
+        return ResponseEntity.ok().body(studentService.getProfileStudent(studentDTO));
+    }
+
+    @PutMapping("/edit_profile_student")
+    public ResponseEntity<ResponseStatus> editTeacher(@RequestBody StudentDTO studentDTO) {
+        return ResponseEntity.ok().body(studentService.editStudentByStudent(studentDTO));
     }
 }

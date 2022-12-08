@@ -220,6 +220,7 @@ public class ClassCustomRepo {
         query.addScalar("slot_of_date", new IntegerType());
         query.addScalar("room_id", new LongType());
         query.addScalar("room_name", new StringType());
+        query.addScalar("teacher_id", new LongType());
         query.addScalar("teacher_name", new StringType());
 
         query.setResultTransformer(Transformers.aliasToBean(ClassScheduleDTO.class));
