@@ -196,7 +196,7 @@ public class ClassCustomRepo {
         StringBuilder sql = new StringBuilder()
                 .append("select cs.id as class_schedule_id, cs.slot_th as slot_th, cs.date as date_study, cs.slot_of_date as slot_of_date,\n" +
                         "r.id as room_id,r.roomname as room_name, t.id as teacher_id, u.fullname as teacher_name\n" +
-                        "from class_schedule cs join class c on cs.class_id = c.id join room r on c.room_id = r.id\n" +
+                        "from class_schedule cs join class c on cs.class_id = c.id join room r on cs.room_id = r.id\n" +
                         "join teacher t on c.teacher_id = t.id join users u on t.user_id = u.id ");
         sql.append(" WHERE 1 = 1");
 
@@ -218,6 +218,7 @@ public class ClassCustomRepo {
         query.addScalar("slot_of_date", new IntegerType());
         query.addScalar("room_id", new LongType());
         query.addScalar("room_name", new StringType());
+        query.addScalar("teacher_id", new LongType());
         query.addScalar("teacher_name", new StringType());
 
         query.setResultTransformer(Transformers.aliasToBean(ClassScheduleDTO.class));

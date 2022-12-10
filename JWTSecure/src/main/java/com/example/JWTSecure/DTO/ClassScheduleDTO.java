@@ -1,5 +1,4 @@
 package com.example.JWTSecure.DTO;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +15,7 @@ public class ClassScheduleDTO implements Serializable {
     private Integer slot_of_date;
     private Long room_id;
     private String room_name;
-    private Integer teacher_id;
+    private Long teacher_id;
     private String teacher_name;
 
 }

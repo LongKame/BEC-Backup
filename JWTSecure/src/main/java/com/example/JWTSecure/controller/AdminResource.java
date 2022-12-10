@@ -20,6 +20,11 @@ public class AdminResource {
     private final StudentService studentService;
     private final SlotService slotService;
 
+    @PutMapping("/update_slot")
+    public ResponseEntity<ResponseStatus> updateSlot(ChangeSlot changeSlotDTO) {
+        return ResponseEntity.ok().body(slotService.updateSlot(changeSlotDTO));
+    }
+
     @GetMapping("/get_slot")
     public ResponseEntity<List<Slot>> getSlot() {
         return ResponseEntity.ok().body(slotService.getSlot());
@@ -30,9 +35,23 @@ public class AdminResource {
         return ResponseEntity.ok().body(teacherService.list());
     }
 
+    @GetMapping("/get_rooms")
+    public ResponseEntity<List<Room>> getRoom() {
+        return ResponseEntity.ok().body(academicAdminService.getRooms());
+    }
+    @GetMapping("/get_teachers")
+    public ResponseEntity<List<TeacherDTO>> getTeacher() {
+        return ResponseEntity.ok().body(teacherService.list());
+    }
+
     @PostMapping("/add_teacher")
     public ResponseEntity<ResponseStatus> addTeacher(@RequestBody AddTeacherDTO addTeacherDTO) {
         return ResponseEntity.ok().body(teacherService.addTeacher(addTeacherDTO));
+    }
+
+    @PostMapping("/get_all_class_by_id")
+    public ResponseEntity<List<ClassScheduleDTO>> getClassesById(@RequestBody ClassDTO classDTO) {
+        return ResponseEntity.ok().body(classService.getClassById(classDTO.getClass_id()));
     }
 
     @PostMapping("/view_teacher")

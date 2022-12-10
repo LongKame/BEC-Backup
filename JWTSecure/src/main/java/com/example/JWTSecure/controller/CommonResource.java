@@ -3,10 +3,7 @@ import com.example.JWTSecure.DTO.*;
 import com.example.JWTSecure.DTO.ResponseStatus;
 import com.example.JWTSecure.domain.Classes;
 import com.example.JWTSecure.domain.Course;
-import com.example.JWTSecure.service.AcademicAdminService;
-import com.example.JWTSecure.service.ClassService;
-import com.example.JWTSecure.service.StudentService;
-import com.example.JWTSecure.service.TimeTableTeacherService;
+import com.example.JWTSecure.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +18,16 @@ public class CommonResource {
     private final TimeTableTeacherService timeTableTeacherService;
     private final ClassService classService;
     private final StudentService studentService;
+    private final SlotService slotService;
 
     @GetMapping("/get_class")
     public ResponseEntity<List<Classes>> getClass1() {
         return ResponseEntity.ok().body(academicAdminService.getClasses());
+    }
+
+    @PutMapping("/update_slot")
+    public ResponseEntity<ResponseStatus> updateSlot(@RequestBody ChangeSlot changeSlotDTO) {
+        return ResponseEntity.ok().body(slotService.updateSlot(changeSlotDTO));
     }
 
     @GetMapping("/get_course")
