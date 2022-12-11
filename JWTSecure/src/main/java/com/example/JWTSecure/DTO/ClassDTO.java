@@ -30,5 +30,4 @@ public class ClassDTO implements Serializable {
     private int page;
     private int pageSize;
     private String key_search;
-//    private int resultData;
 }

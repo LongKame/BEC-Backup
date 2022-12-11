@@ -151,13 +151,6 @@ public class TeacherServiceImpl implements TeacherService {
         ResponseStatus rs = new ResponseStatus();
         StringBuilder message = new StringBuilder();
 
-        boolean isValidEmail = emailValidator.test(addTeacherDTO.getEmail());
-        if(!isValidEmail){
-            message.append("Email is not valid");
-            rs.setMessage(message.toString());
-            rs.setState(false);
-            return rs;
-        }
 
         if (addTeacherDTO != null) {
             if (userRepo.findByUsername(addTeacherDTO.getUser_name()) != null) {

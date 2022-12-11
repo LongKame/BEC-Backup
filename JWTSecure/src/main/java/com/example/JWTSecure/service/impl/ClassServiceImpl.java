@@ -1,5 +1,4 @@
 package com.example.JWTSecure.service.impl;
-
 import com.example.JWTSecure.DTO.ClassDTO;
 import com.example.JWTSecure.DTO.ClassScheduleDTO;
 import com.example.JWTSecure.DTO.ResponseStatus;

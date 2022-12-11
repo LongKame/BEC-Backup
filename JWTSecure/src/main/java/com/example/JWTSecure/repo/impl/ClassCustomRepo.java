@@ -1,8 +1,6 @@
 package com.example.JWTSecure.repo.impl;
-
 import com.example.JWTSecure.DTO.ClassDTO;
 import com.example.JWTSecure.DTO.ClassScheduleDTO;
-import com.example.JWTSecure.DTO.StudentDTO;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
@@ -198,7 +196,7 @@ public class ClassCustomRepo {
         StringBuilder sql = new StringBuilder()
                 .append("select cs.id as class_schedule_id, cs.slot_th as slot_th, cs.date as date_study, cs.slot_of_date as slot_of_date,\n" +
                         "r.id as room_id,r.roomname as room_name, t.id as teacher_id, u.fullname as teacher_name\n" +
-                        "from class_schedule cs join class c on cs.class_id = c.id join room r on c.room_id = r.id\n" +
+                        "from class_schedule cs join class c on cs.class_id = c.id join room r on cs.room_id = r.id\n" +
                         "join teacher t on c.teacher_id = t.id join users u on t.user_id = u.id ");
         sql.append(" WHERE 1 = 1");
 
@@ -239,9 +237,9 @@ public class ClassCustomRepo {
             if(classDTO.getFirstOnWeek() != null){
                 sql.append(" AND cs.first_of_week = :first_of_week ");
             }
-            if(classDTO.getSecondOnWeek() != null){
-                sql.append(" AND cs.second_of_week = :second_of_week ");
-            }
+//            if(classDTO.getSecondOnWeek() != null){
+//                sql.append(" AND cs.second_of_week = :second_of_week ");
+//            }
             if(classDTO.isActive()){
                 sql.append(" AND c.active = :active ");
             }
@@ -257,9 +255,9 @@ public class ClassCustomRepo {
             if(classDTO.getFirstOnWeek() != null){
                 query.setParameter("first_of_week", classDTO.getFirstOnWeek().getValue());
             }
-            if(classDTO.getSecondOnWeek() != null){
-                query.setParameter("second_of_week", classDTO.getSecondOnWeek().getValue());
-            }
+//            if(classDTO.getSecondOnWeek() != null){
+//                query.setParameter("second_of_week", classDTO.getSecondOnWeek().getValue());
+//            }
             if(classDTO.isActive()){
                 query.setParameter("active", classDTO.isActive());
             }
@@ -292,9 +290,9 @@ public class ClassCustomRepo {
             if(classDTO.getFirstOnWeek() != null){
                 sql.append(" AND cs.first_of_week = :first_of_week ");
             }
-            if(classDTO.getSecondOnWeek() != null){
-                sql.append(" AND cs.second_of_week = :second_of_week ");
-            }
+//            if(classDTO.getSecondOnWeek() != null){
+//                sql.append(" AND cs.second_of_week = :second_of_week ");
+//            }
             if(classDTO.isActive()){
                 sql.append(" AND c.active = :active ");
             }
@@ -310,9 +308,9 @@ public class ClassCustomRepo {
             if(classDTO.getFirstOnWeek() != null){
                 query.setParameter("first_of_week", classDTO.getFirstOnWeek().getValue());
             }
-            if(classDTO.getSecondOnWeek() != null){
-                query.setParameter("second_of_week", classDTO.getSecondOnWeek().getValue());
-            }
+//            if(classDTO.getSecondOnWeek() != null){
+//                query.setParameter("second_of_week", classDTO.getSecondOnWeek().getValue());
+//            }
             if(classDTO.isActive()){
                 query.setParameter("active", classDTO.isActive());
             }
@@ -333,4 +331,3 @@ public class ClassCustomRepo {
     }
 
 }
-

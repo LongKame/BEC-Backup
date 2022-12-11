@@ -1,8 +1,6 @@
 package com.example.JWTSecure.repo.impl;
-
 import com.example.JWTSecure.DTO.AcademicAdminDTO;
 import com.example.JWTSecure.DTO.CurriculumDTO;
-import com.example.JWTSecure.DTO.TeacherDTO;
 import com.example.JWTSecure.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;

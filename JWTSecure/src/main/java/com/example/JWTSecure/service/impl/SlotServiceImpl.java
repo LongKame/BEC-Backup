@@ -1,9 +1,8 @@
 package com.example.JWTSecure.service.impl;
-import com.example.JWTSecure.DTO.ChangeSlotDTO;
+import com.example.JWTSecure.DTO.ChangeSlot;
 import com.example.JWTSecure.DTO.ResponseStatus;
 import com.example.JWTSecure.domain.ClassSchedule;
 import com.example.JWTSecure.domain.Slot;
-import com.example.JWTSecure.repo.ClassRepo;
 import com.example.JWTSecure.repo.ClassScheduleRepo;
 import com.example.JWTSecure.repo.SlotRepo;
 import com.example.JWTSecure.repo.impl.ClassScheduleCustomRepo;
@@ -26,9 +25,8 @@ import java.util.List;
 public class SlotServiceImpl implements SlotService {
 
     private final SlotRepo slotRepo;
-    private final ClassRepo classRepo;
-    private final ClassScheduleCustomRepo classScheduleCustomRepo;
     private final ClassScheduleRepo classScheduleRepo;
+    private final ClassScheduleCustomRepo classScheduleCustomRepo;
 
     @Override
     public List<Slot> getSlot() {
@@ -40,17 +38,17 @@ public class SlotServiceImpl implements SlotService {
     }
 
     @Override
-    public ResponseStatus updateSlot(ChangeSlotDTO changeSlotDTO) {
+    public ResponseStatus updateSlot(ChangeSlot changeSlotDTO) {
 
         ResponseStatus responseStatus = new ResponseStatus();
         ClassSchedule classSchedule = new ClassSchedule();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate localDate = LocalDate.parse(changeSlotDTO.getDate(), formatter);
         String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         LocalDateTime localDateTime = LocalDateTime.parse(timeStamp, formatter1);
 
-        if(classScheduleCustomRepo.findSlotEmpty(changeSlotDTO)==null){
+        if(classScheduleCustomRepo.findSlotEmpty(changeSlotDTO).size()==0){
             classSchedule.setId(changeSlotDTO.getClass_schedule_id());
 //            classScheduleRepo.findById(changeSlotDTO.getClass_schedule_id()).get().getClassId();
             classSchedule.setClassId(classScheduleRepo.findById(changeSlotDTO.getClass_schedule_id()).get().getClassId());
@@ -68,6 +66,4 @@ public class SlotServiceImpl implements SlotService {
         responseStatus.setState(false);
         return responseStatus;
     }
-
-
 }

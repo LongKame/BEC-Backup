@@ -3,8 +3,6 @@ import com.example.JWTSecure.DTO.*;
 import com.example.JWTSecure.DTO.ResponseStatus;
 import com.example.JWTSecure.domain.Classes;
 import com.example.JWTSecure.domain.Course;
-import com.example.JWTSecure.domain.Curriculum;
-import com.example.JWTSecure.domain.Room;
 import com.example.JWTSecure.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +18,21 @@ public class CommonResource {
     private final TimeTableTeacherService timeTableTeacherService;
     private final ClassService classService;
     private final StudentService studentService;
-    private final TeacherService teacherService;
     private final SlotService slotService;
 
+    @GetMapping("/get_class")
+    public ResponseEntity<List<Classes>> getClass1() {
+        return ResponseEntity.ok().body(academicAdminService.getClasses());
+    }
+
+    @PutMapping("/update_slot")
+    public ResponseEntity<ResponseStatus> updateSlot(@RequestBody ChangeSlot changeSlotDTO) {
+        return ResponseEntity.ok().body(slotService.updateSlot(changeSlotDTO));
+    }
 
     @GetMapping("/get_course")
     public ResponseEntity<List<Course>> getCourse() {
         return ResponseEntity.ok().body(academicAdminService.getCourse());
-    }
-
-    @PutMapping("/update_slot")
-    public ResponseEntity<ResponseStatus> updateSlot(ChangeSlotDTO changeSlotDTO) {
-        return ResponseEntity.ok().body(slotService.updateSlot(changeSlotDTO));
     }
 
     @GetMapping("/view_curriculum")

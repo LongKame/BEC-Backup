@@ -30,4 +30,5 @@ public interface AcademicAdminService {
     ResponseStatus editAcaByAca(AcademicAdminDTO academicAdminDTO);
     AcademicAdminDTO getProfileAca(AcademicAdminDTO academicAdminDTO);
     List<CurriculumDTO> viewCurriculum();
+    List<Classes> getClasses();
 }

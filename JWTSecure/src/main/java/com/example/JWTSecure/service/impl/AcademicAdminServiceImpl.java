@@ -42,6 +42,7 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
     private final CurriculumRepo curriculumRepo;
     private final CurriculumCustomRepo curriculumCustomRepo;
     private final EmailValidator emailValidator;
+    private final ClassRepo classRepo;
 
     @Override
     public List<Quiz> getQuiz(Long levelId) {
@@ -257,14 +258,6 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
         User user = new User();
         ResponseStatus rs = new ResponseStatus();
         StringBuilder message = new StringBuilder();
-
-        boolean isValidEmail = emailValidator.test(addAcademicAdminDTO.getEmail());
-        if (!isValidEmail) {
-            message.append("Email is not valid");
-            rs.setMessage(message.toString());
-            rs.setState(false);
-            return rs;
-        }
 
         if (addAcademicAdminDTO != null) {
             if (userRepo.findByUsername(addAcademicAdminDTO.getUser_name()) != null) {
@@ -611,6 +604,15 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
     public List<CurriculumDTO> viewCurriculum() {
         try {
             return academicAdminCustomRepo.getCurriculum();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Classes> getClasses() {
+        try {
+            return classRepo.findAllByOrderByIdAsc();
         } catch (Exception ex) {
             return null;
         }

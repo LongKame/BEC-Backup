@@ -1,5 +1,5 @@
 package com.example.JWTSecure.repo.impl;
-import com.example.JWTSecure.DTO.ChangeSlotDTO;
+import com.example.JWTSecure.DTO.ChangeSlot;
 import com.example.JWTSecure.DTO.TimeTableStudentDTO;
 import com.example.JWTSecure.DTO.TimeTableTeacherDTO;
 import com.example.JWTSecure.domain.Student;
@@ -29,6 +29,7 @@ public class ClassScheduleCustomRepo {
     private final UserRepo userRepo;
     private final TeacherRepo teacherRepo;
     private final StudentRepo studentRepo;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -117,8 +118,8 @@ public class ClassScheduleCustomRepo {
         return query.list();
     }
 
-    public ChangeSlotDTO findSlotEmpty(ChangeSlotDTO changeSlotDTO) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public List<ChangeSlot> findSlotEmpty(ChangeSlot changeSlotDTO) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate localDate = LocalDate.parse(changeSlotDTO.getDate(), formatter);
         StringBuilder sql = new StringBuilder()
                 .append("select cs.id as class_schedule_id from class_schedule cs join class c on cs.class_id = c.id\n ");
@@ -129,7 +130,7 @@ public class ClassScheduleCustomRepo {
         if (changeSlotDTO.getRoom_id() != null) {
             sql.append(" AND cs.room_id = :room_id ");
         }
-        if (localDate != null) {
+        if (changeSlotDTO.getDate() != null) {
             sql.append(" AND cs.date = :date");
         }
         if (changeSlotDTO.getSlot_of_date() != null) {
@@ -139,7 +140,7 @@ public class ClassScheduleCustomRepo {
             sql.append(" AND c.teacher_id = :teacher_id ");
         }
 
-        NativeQuery<ChangeSlotDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
+        NativeQuery<ChangeSlot> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (changeSlotDTO.getSlot_th() != null) {
             query.setParameter("slot_th", changeSlotDTO.getSlot_th());
@@ -147,7 +148,7 @@ public class ClassScheduleCustomRepo {
         if (changeSlotDTO.getRoom_id() != null) {
             query.setParameter("room_id", changeSlotDTO.getRoom_id());
         }
-        if (localDate != null) {
+        if (changeSlotDTO.getDate() != null) {
             query.setParameter("date", localDate);
         }
         if (changeSlotDTO.getSlot_of_date() != null) {
@@ -159,9 +160,8 @@ public class ClassScheduleCustomRepo {
 
         query.addScalar("class_schedule_id", new LongType());
 
-        query.setResultTransformer(Transformers.aliasToBean(ChangeSlotDTO.class));
-        return (ChangeSlotDTO) query.getSingleResult();
+        query.setResultTransformer(Transformers.aliasToBean(ChangeSlot.class));
+        return query.list();
     }
-
 
 }
