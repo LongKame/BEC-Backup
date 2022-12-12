@@ -23,7 +23,7 @@ public class CommonResource {
     @GetMapping("/get_class")
     public ResponseEntity<List<Classes>> getClass1() {
         return ResponseEntity.ok().body(academicAdminService.getClasses());
-    }
+    } 
 
     @PutMapping("/update_slot")
     public ResponseEntity<ResponseStatus> updateSlot(@RequestBody ChangeSlot changeSlotDTO) {

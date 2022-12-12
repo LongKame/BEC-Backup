@@ -257,7 +257,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDTO> getListStudentByIdClass(Long id) {
+    public List<StudentInClassDTO> getListStudentByIdClass(Long id) {
         try {
             return studentCustomRepo.getListStudentByIdClass(id);
         } catch (Exception e) {

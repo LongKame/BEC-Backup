@@ -109,9 +109,9 @@ public class AdminResource {
         return ResponseEntity.ok().body(classService.getAllClass(classDTO));
     }
 
-    @PostMapping("/view_student_class/{id}")
-    public ResponseEntity<List<StudentDTO>> getListStudentClass(@PathVariable Long id) {
-        return ResponseEntity.ok().body(studentService.getListStudentByIdClass(id));
+    @PostMapping("/view_student_class")
+    public ResponseEntity<List<StudentInClassDTO>> getListStudentClass(@RequestBody StudentInClassDTO studentInClassDTO) {
+        return ResponseEntity.ok().body(studentService.getListStudentByIdClass(studentInClassDTO.getClass_id()));
     }
 
     @PostMapping("/search_student")
