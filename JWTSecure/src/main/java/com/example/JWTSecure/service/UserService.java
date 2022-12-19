@@ -14,5 +14,8 @@ public interface UserService {
     List<Role> getRoles();
     String signUpUser(User appUser);
     void saveConfirmationToken(User appUser, String token);
+    void saveConfirmationTokenResetPassword(User appUser, String token);
     int enableAppUser(String email);
+    int activeAppUser(String email);
+    String createPasswordResetTokenForUser(Long id);
 }

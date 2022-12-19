@@ -1,4 +1,5 @@
 package com.example.JWTSecure.service.impl;
+
 import com.example.JWTSecure.DTO.TimeTableStudentDTO;
 import com.example.JWTSecure.DTO.TimeTableTeacherDTO;
 import com.example.JWTSecure.DTO.Week;
@@ -7,6 +8,7 @@ import com.example.JWTSecure.service.TimeTableTeacherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -125,7 +127,7 @@ public class TimeTableTeacherServiceImpl implements TimeTableTeacherService {
     @Override
     public List<TimeTableStudentDTO> getTimeTableOfStudent(TimeTableStudentDTO timeTableStudentDTO) {
 
-        if(timeTableStudentDTO.getUser_name()!=null && timeTableStudentDTO.getDate_study()!=null){
+        if (timeTableStudentDTO.getUser_name() != null && timeTableStudentDTO.getDate_study() != null) {
             List<TimeTableStudentDTO> list = classScheduleCustomRepo.getTimeTableForStudent(timeTableStudentDTO);
             List<TimeTableStudentDTO> list1 = new ArrayList<>();
 

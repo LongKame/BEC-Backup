@@ -66,6 +66,7 @@ public class RegistrationService {
 
         confirmTokenService.setConfirmedAt(token);
         appUserService.enableAppUser(confirmToken.get().getUser().getEmail());
+        appUserService.activeAppUser(confirmToken.get().getUser().getEmail());
         return "Your email is confirmed. Thank you for using our service!";
     }
 

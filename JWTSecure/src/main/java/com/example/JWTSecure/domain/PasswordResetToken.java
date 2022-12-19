@@ -1,42 +1,33 @@
-package com.example.JWTSecure.token;
-
-import com.example.JWTSecure.domain.User;
+package com.example.JWTSecure.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "confirmation_token")
-public class ConfirmationToken {
+@Table(name = "password_reset_token")
+public class PasswordResetToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(nullable = false)
     private String token;
-
+    @Column(nullable = false)
+    private Long user_id;
     @Column(nullable = false)
     private LocalDateTime createdAt;
-
     @Column(nullable = false)
     private LocalDateTime expiresAt;
-
     private LocalDateTime confirmedAt;
 
-    @ManyToOne
-    @JoinColumn(nullable = false,
-            name = "user_id")
-    private User user;
-
-    public ConfirmationToken() {
+    public PasswordResetToken() {
     }
 
-    public ConfirmationToken(String token, LocalDateTime createdAt, LocalDateTime expiresAt, User user) {
+    public PasswordResetToken(String token, Long user_id, LocalDateTime createdAt, LocalDateTime expiresAt) {
         this.token = token;
+        this.user_id = user_id;
         this.createdAt = createdAt;
         this.expiresAt = expiresAt;
-        this.user = user;
     }
 
     public Long getId() {
@@ -53,6 +44,14 @@ public class ConfirmationToken {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -77,13 +76,5 @@ public class ConfirmationToken {
 
     public void setConfirmedAt(LocalDateTime confirmedAt) {
         this.confirmedAt = confirmedAt;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

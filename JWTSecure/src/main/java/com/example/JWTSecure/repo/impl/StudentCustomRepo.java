@@ -191,7 +191,6 @@ public class StudentCustomRepo {
         return query.list();
     }
 
-
     public StudentDTO getStudent(StudentDTO studentDTO) {
 
         if(studentDTO.getUser_name()!=null){
@@ -232,7 +231,6 @@ public class StudentCustomRepo {
         return (StudentDTO) query.getSingleResult();
     }
 
-    //bug
     public List<StudentInClassDTO> getListStudentByIdClass(Long id) {
 
         StringBuilder sql = new StringBuilder()
