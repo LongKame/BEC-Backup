@@ -1,4 +1,5 @@
 package com.example.JWTSecure.service.impl;
+
 import com.example.JWTSecure.DTO.ChangeSlot;
 import com.example.JWTSecure.DTO.ResponseStatus;
 import com.example.JWTSecure.domain.ClassSchedule;
@@ -10,6 +11,7 @@ import com.example.JWTSecure.service.SlotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -30,9 +32,9 @@ public class SlotServiceImpl implements SlotService {
 
     @Override
     public List<Slot> getSlot() {
-        try{
+        try {
             return slotRepo.findAll();
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
@@ -47,10 +49,9 @@ public class SlotServiceImpl implements SlotService {
         String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         LocalDateTime localDateTime = LocalDateTime.parse(timeStamp, formatter1);
-
-        if(classScheduleCustomRepo.findSlotEmpty(changeSlotDTO).size()==0){
+        classSchedule.setSlotOfDate(Long.valueOf(changeSlotDTO.getSlot_of_date()));
+        if (classScheduleCustomRepo.findSlotEmpty(changeSlotDTO).size() == 0) {
             classSchedule.setId(changeSlotDTO.getClass_schedule_id());
-//            classScheduleRepo.findById(changeSlotDTO.getClass_schedule_id()).get().getClassId();
             classSchedule.setClassId(classScheduleRepo.findById(changeSlotDTO.getClass_schedule_id()).get().getClassId());
             classSchedule.setSlotOfDate(Long.valueOf(changeSlotDTO.getSlot_of_date()));
             classSchedule.setSlot_th(changeSlotDTO.getSlot_th());
@@ -58,11 +59,11 @@ public class SlotServiceImpl implements SlotService {
             classSchedule.setDate(localDate);
             classSchedule.setUpdatedAt(localDateTime);
             classScheduleRepo.save(classSchedule);
-            responseStatus.setMessage("Successfully");
+            responseStatus.setMessage("Update successful");
             responseStatus.setState(true);
             return responseStatus;
         }
-        responseStatus.setMessage("Failure");
+        responseStatus.setMessage("Update failed");
         responseStatus.setState(false);
         return responseStatus;
     }

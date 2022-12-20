@@ -69,14 +69,14 @@ public class ResetPassword {
                 user.setPassword(encodedPassword);
                 userRepo.save(user);
                 responseStatus.setState(true);
-                responseStatus.setMessage("Successfully");
+                responseStatus.setMessage("Change password successful");
                 return responseStatus;
             } catch (Exception ex) {
 
             }
         }
         responseStatus.setState(false);
-        responseStatus.setMessage("Failure");
+        responseStatus.setMessage("Change password failed");
         return responseStatus;
     }
 

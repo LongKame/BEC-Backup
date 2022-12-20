@@ -1,4 +1,5 @@
 package com.example.JWTSecure.service.impl;
+
 import com.example.JWTSecure.DTO.*;
 import com.example.JWTSecure.domain.*;
 import com.example.JWTSecure.repo.CurriculumRepo;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -188,16 +190,16 @@ public class StudentServiceImpl implements StudentService {
                             student.setUserId(userRepo.findTopByOrderByIdDesc().getId());
                             student.setRoleId(4L);
                             studentRepo.save(student);
-                            rs.setMessage("Ok");
+                            rs.setMessage("Add successful");
                             rs.setState(true);
                         }
                     }
                 } else {
-                    rs.setMessage("Failure");
+                    rs.setMessage("Add failed");
                     rs.setState(false);
                 }
             } catch (Exception ex) {
-                rs.setMessage("Failure");
+                rs.setMessage("Add failed");
                 rs.setState(false);
             }
         }
@@ -241,15 +243,15 @@ public class StudentServiceImpl implements StudentService {
                         user.setAddress(addStudentDTO.getAddress());
                         user.setActive(addStudentDTO.isActive());
                         userRepo.save(user);
-                        rs.setMessage("Ok");
+                        rs.setMessage("Update successful");
                         rs.setState(true);
                     }
                 } else {
-                    rs.setMessage("Failure");
+                    rs.setMessage("Update failed");
                     rs.setState(false);
                 }
             } catch (Exception ex) {
-                rs.setMessage("Failure");
+                rs.setMessage("Update failed");
                 rs.setState(false);
             }
         }
@@ -281,15 +283,15 @@ public class StudentServiceImpl implements StudentService {
             if (id != null) {
                 studentInClassRepo.updatePending(id);
                 responseStatus.setState(true);
-                responseStatus.setMessage("Success");
+                responseStatus.setMessage("Update successful");
             } else {
                 responseStatus.setState(false);
-                responseStatus.setMessage("Failure");
+                responseStatus.setMessage("Update failed");
             }
             return responseStatus;
         } catch (Exception e) {
             responseStatus.setState(false);
-            responseStatus.setMessage("Failure");
+            responseStatus.setMessage("Update failed");
             return responseStatus;
         }
     }
@@ -310,10 +312,10 @@ public class StudentServiceImpl implements StudentService {
             curriculum.setUpdatedAt(localDateTime);
             curriculumRepo.save(curriculum);
             responseStatus.setState(true);
-            responseStatus.setMessage("Success");
+            responseStatus.setMessage("Add successful");
         } catch (Exception ex) {
             responseStatus.setState(false);
-            responseStatus.setMessage("Failure");
+            responseStatus.setMessage("Add failed");
         }
         return responseStatus;
     }
@@ -324,7 +326,7 @@ public class StudentServiceImpl implements StudentService {
         StudentInClass studentInClass = new StudentInClass();
         StudentInClass sic = new StudentInClass();
 
-        if(registerClass.getUsername()==null){
+        if (registerClass.getUsername() == null) {
             responseStatus.setMessage("You need login as Student");
             responseStatus.setState(false);
             return responseStatus;
@@ -332,7 +334,7 @@ public class StudentServiceImpl implements StudentService {
 
         Long student_Id = studentRepo.findByUserId(userRepo.findUserByUsername(registerClass.getUsername()).getId()).getId();
 
-        if(studentInClassRepo.findStudentInClassByStudentId(student_Id)!=null){
+        if (studentInClassRepo.findStudentInClassByStudentId(student_Id) != null) {
             responseStatus.setMessage("You registered other course");
             responseStatus.setState(false);
             return responseStatus;
@@ -347,18 +349,18 @@ public class StudentServiceImpl implements StudentService {
                     studentInClass.setClassId(registerClass.getClassId());
                     studentInClass.setStudentId(studentId);
                     studentInClassRepo.save(studentInClass);
-                    responseStatus.setMessage("Success");
+                    responseStatus.setMessage("Register successful");
                     responseStatus.setState(true);
                 } else {
-                    responseStatus.setMessage("Failure");
+                    responseStatus.setMessage("Register failed");
                     responseStatus.setState(false);
                 }
             } else {
-                responseStatus.setMessage("Failure");
+                responseStatus.setMessage("Register failed");
                 responseStatus.setState(false);
             }
         } catch (Exception ex) {
-            responseStatus.setMessage("Failure");
+            responseStatus.setMessage("Register failed");
             responseStatus.setState(false);
         }
         return responseStatus;
@@ -371,28 +373,28 @@ public class StudentServiceImpl implements StudentService {
             if (user_id != null) {
                 userRepo.deactive(user_id);
                 responseStatus.setState(true);
-                responseStatus.setMessage("Success");
+                responseStatus.setMessage("Update successful");
             } else {
                 responseStatus.setState(false);
-                responseStatus.setMessage("Failure");
+                responseStatus.setMessage("Update failed");
             }
             return responseStatus;
         } catch (Exception e) {
             responseStatus.setState(false);
-            responseStatus.setMessage("Failure");
+            responseStatus.setMessage("Update failed");
             return responseStatus;
         }
     }
 
     @Override
     public StudentDTO getProfileStudent(StudentDTO studentDTO) {
-        if(studentDTO.getUser_name()!=null){
-            try{
+        if (studentDTO.getUser_name() != null) {
+            try {
                 return studentCustomRepo.getStudent(studentDTO);
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 return null;
             }
-        }else {
+        } else {
             return null;
         }
     }
@@ -442,7 +444,7 @@ public class StudentServiceImpl implements StudentService {
                     student.setUserId(studentDTO.getUser_Id());
                     student.setRoleId(3L);
                     studentRepo.save(student);
-                    rs.setMessage("Ok");
+                    rs.setMessage("Update successful");
                     rs.setState(true);
                     return rs;
                 }

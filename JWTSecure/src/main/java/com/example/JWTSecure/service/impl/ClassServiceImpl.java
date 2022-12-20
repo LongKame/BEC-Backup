@@ -1,4 +1,5 @@
 package com.example.JWTSecure.service.impl;
+
 import com.example.JWTSecure.DTO.ClassDTO;
 import com.example.JWTSecure.DTO.ClassScheduleDTO;
 import com.example.JWTSecure.DTO.ResponseStatus;
@@ -14,6 +15,7 @@ import com.nimbusds.oauth2.sdk.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -159,16 +161,16 @@ public class ClassServiceImpl implements ClassService {
                         j = j + 1;
                     }
 
-                    rs.setMessage("Ok");
+                    rs.setMessage("Add successful");
                     rs.setState(true);
                 }
             } else {
-                rs.setMessage("Failure");
+                rs.setMessage("Add failed");
                 rs.setState(false);
             }
             return rs;
         } catch (Exception ex) {
-            rs.setMessage("Failure");
+            rs.setMessage("Add failed");
             rs.setState(false);
             return rs;
         }
@@ -180,10 +182,10 @@ public class ClassServiceImpl implements ClassService {
         try {
             classRepo.deActive(id);
             responseStatus.setState(true);
-            responseStatus.setMessage("Success");
+            responseStatus.setMessage("Disable successful");
         } catch (Exception ex) {
             responseStatus.setState(false);
-            responseStatus.setMessage("Failure");
+            responseStatus.setMessage("Disable failed");
         }
         return responseStatus;
     }
