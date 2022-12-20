@@ -1,4 +1,5 @@
 package com.example.JWTSecure.repo.impl;
+
 import com.example.JWTSecure.DTO.ClassDTO;
 import com.example.JWTSecure.DTO.ClassScheduleDTO;
 import org.hibernate.Session;
@@ -6,6 +7,7 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.*;
 import org.springframework.stereotype.Repository;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -29,7 +31,7 @@ public class ClassCustomRepo {
                         "join course co on co.id = c.course_id\n" +
                         "join level l on co.level_id = l.id  ");
         sql.append(" WHERE 1 = 1 ");
-        if(courseId!=null){
+        if (courseId != null) {
             sql.append(" AND c.course_id = :courseId");
         }
 
@@ -37,7 +39,7 @@ public class ClassCustomRepo {
 
         NativeQuery<ClassDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
-        if(courseId!=null){
+        if (courseId != null) {
             query.setParameter("courseId", courseId);
         }
 
@@ -71,10 +73,8 @@ public class ClassCustomRepo {
                         "join course co on co.id = c.course_id\n" +
                         "join level l on co.level_id = l.id  ");
         sql.append(" WHERE 1 = 1 ");
-        if(classDTO.isActive()){
-            sql.append(" AND c.active = :active ");
-        }
-        if(classDTO.getKey_search()!=null){
+        sql.append(" AND c.active = true ");
+        if (classDTO.getKey_search() != null) {
             sql.append(" AND (UPPER(c.name) LIKE CONCAT('%', UPPER(:class_name), '%') ESCAPE '&')");
         }
 
@@ -82,11 +82,11 @@ public class ClassCustomRepo {
 
         NativeQuery<ClassDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
-        if(classDTO.isActive()){
+        if (classDTO.isActive()) {
             query.setParameter("active", classDTO.isActive());
         }
         if (classDTO.getKey_search() != null) {
-            query.setParameter("class_name", "%"+classDTO.getKey_search()+"%");
+            query.setParameter("class_name", "%" + classDTO.getKey_search() + "%");
         }
 
         query.addScalar("class_id", new LongType());
@@ -123,10 +123,8 @@ public class ClassCustomRepo {
                         "join course co on co.id = c.course_id\n" +
                         "join level l on co.level_id = l.id  ");
         sql.append(" WHERE 1 = 1 ");
-        if(classDTO.isActive()){
-            sql.append(" AND c.active = :active ");
-        }
-        if(classDTO.getKey_search()!=null){
+        sql.append(" AND c.active = true ");
+        if (classDTO.getKey_search() != null) {
             sql.append(" AND (UPPER(c.name) LIKE CONCAT('%', UPPER(:class_name), '%') ESCAPE '&') ");
         }
 
@@ -134,11 +132,11 @@ public class ClassCustomRepo {
 
         NativeQuery<ClassDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
-        if(classDTO.isActive()){
+        if (classDTO.isActive()) {
             query.setParameter("active", classDTO.isActive());
         }
         if (classDTO.getKey_search() != null) {
-            query.setParameter("class_name", "%"+classDTO.getKey_search()+"%");
+            query.setParameter("class_name", "%" + classDTO.getKey_search() + "%");
         }
 
         query.addScalar("class_id", new LongType());
@@ -200,7 +198,7 @@ public class ClassCustomRepo {
                         "join teacher t on c.teacher_id = t.id join users u on t.user_id = u.id ");
         sql.append(" WHERE 1 = 1");
 
-        if(class_id!=null){
+        if (class_id != null) {
             sql.append(" AND c.id = :class_id ");
         }
 
@@ -208,7 +206,7 @@ public class ClassCustomRepo {
 
         NativeQuery<ClassScheduleDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
-        if(class_id!=null){
+        if (class_id != null) {
             query.setParameter("class_id", class_id);
         }
 
@@ -231,37 +229,37 @@ public class ClassCustomRepo {
                     .append("select c.name as class_name, c.start_date as start_date, c.end_date as end_date, c.active as active\n" +
                             "from class c join class_slot cs on c.id = cs.class_id ");
             sql.append("WHERE 1 = 1 ");
-            if(classDTO.getSlot_id() != null){
+            if (classDTO.getSlot_id() != null) {
                 sql.append(" AND cs.slot_id = :slot_id ");
             }
-            if(classDTO.getFirstOnWeek() != null){
+            if (classDTO.getFirstOnWeek() != null) {
                 sql.append(" AND cs.first_of_week = :first_of_week ");
             }
 //            if(classDTO.getSecondOnWeek() != null){
 //                sql.append(" AND cs.second_of_week = :second_of_week ");
 //            }
-            if(classDTO.isActive()){
+            if (classDTO.isActive()) {
                 sql.append(" AND c.active = :active ");
             }
-            if(classDTO.getRoom_id()!=null){
+            if (classDTO.getRoom_id() != null) {
                 sql.append(" AND c.room_id = :room_id ");
             }
 
             NativeQuery<ClassDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
-            if(classDTO.getSlot_id() != null){
+            if (classDTO.getSlot_id() != null) {
                 query.setParameter("slot_id", classDTO.getSlot_id());
             }
-            if(classDTO.getFirstOnWeek() != null){
+            if (classDTO.getFirstOnWeek() != null) {
                 query.setParameter("first_of_week", classDTO.getFirstOnWeek().getValue());
             }
 //            if(classDTO.getSecondOnWeek() != null){
 //                query.setParameter("second_of_week", classDTO.getSecondOnWeek().getValue());
 //            }
-            if(classDTO.isActive()){
+            if (classDTO.isActive()) {
                 query.setParameter("active", classDTO.isActive());
             }
-            if(classDTO.getRoom_id()!=null){
+            if (classDTO.getRoom_id() != null) {
                 query.setParameter("room_id", classDTO.getRoom_id());
             }
 
@@ -272,49 +270,49 @@ public class ClassCustomRepo {
 
             query.setResultTransformer(Transformers.aliasToBean(ClassDTO.class));
             return (ClassDTO) query.getSingleResult();
-        }catch (RuntimeException re){
+        } catch (RuntimeException re) {
             return null;
         }
     }
 
     public ClassDTO checkTeacherTeaching(ClassDTO classDTO) {
 
-        try{
+        try {
             StringBuilder sql = new StringBuilder()
                     .append("select c.name as class_name, c.start_date as start_date, c.end_date as end_date, c.active as active\n" +
                             "from class c join class_slot cs on c.id = cs.class_id ");
             sql.append("WHERE 1 = 1 ");
-            if(classDTO.getSlot_id() != null){
+            if (classDTO.getSlot_id() != null) {
                 sql.append(" AND cs.slot_id = :slot_id ");
             }
-            if(classDTO.getFirstOnWeek() != null){
+            if (classDTO.getFirstOnWeek() != null) {
                 sql.append(" AND cs.first_of_week = :first_of_week ");
             }
 //            if(classDTO.getSecondOnWeek() != null){
 //                sql.append(" AND cs.second_of_week = :second_of_week ");
 //            }
-            if(classDTO.isActive()){
+            if (classDTO.isActive()) {
                 sql.append(" AND c.active = :active ");
             }
-            if(classDTO.getTeacher_id()!=null){
+            if (classDTO.getTeacher_id() != null) {
                 sql.append(" AND c.teacher_id = :teacher_id ");
             }
 
             NativeQuery<ClassDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
-            if(classDTO.getSlot_id() != null){
+            if (classDTO.getSlot_id() != null) {
                 query.setParameter("slot_id", classDTO.getSlot_id());
             }
-            if(classDTO.getFirstOnWeek() != null){
+            if (classDTO.getFirstOnWeek() != null) {
                 query.setParameter("first_of_week", classDTO.getFirstOnWeek().getValue());
             }
 //            if(classDTO.getSecondOnWeek() != null){
 //                query.setParameter("second_of_week", classDTO.getSecondOnWeek().getValue());
 //            }
-            if(classDTO.isActive()){
+            if (classDTO.isActive()) {
                 query.setParameter("active", classDTO.isActive());
             }
-            if(classDTO.getTeacher_id()!=null){
+            if (classDTO.getTeacher_id() != null) {
                 query.setParameter("teacher_id", classDTO.getTeacher_id());
             }
 
@@ -325,7 +323,7 @@ public class ClassCustomRepo {
 
             query.setResultTransformer(Transformers.aliasToBean(ClassDTO.class));
             return (ClassDTO) query.getSingleResult();
-        }catch (RuntimeException re){
+        } catch (RuntimeException re) {
             return null;
         }
     }
