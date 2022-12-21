@@ -32,6 +32,11 @@ public class TeacherResource {
         return ResponseEntity.ok().body(teacherService.getAllTeacher(teacherDTO));
     }
 
+    @PostMapping("/view_student_class")
+    public ResponseEntity<List<StudentInClassDTO>> getListStudentClass(@RequestBody StudentInClassDTO studentInClassDTO) {
+        return ResponseEntity.ok().body(studentService.getListStudentByIdClass(studentInClassDTO.getClass_id()));
+    }
+
     @PostMapping("/view_acad")
     public ResponseEntity<SearchResultDTO<AcademicAdminDTO>> getAcad(@RequestBody AcademicAdminDTO academicAdminDTO) {
         return ResponseEntity.ok().body(academicAdminService.getAllAcad(academicAdminDTO));
@@ -91,4 +96,9 @@ public class TeacherResource {
     public ResponseEntity<TimeTableDTO> getAllTimetableByTeacher(@RequestBody Classes classes) {
         return ResponseEntity.ok().body(teacherService.getAllTimetableByTeacher(classes.getId()));
     }
+
+//    @PostMapping("/get_all_time_table_by_teacher")
+//    public ResponseEntity<TimeTableDTO> getAllTimetableByTeacher(@RequestBody Classes classes) {
+//        return ResponseEntity.ok().body(teacherService.getAllTimetableByTeacher(classes.getId()));
+//    }
 }

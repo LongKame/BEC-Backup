@@ -9,7 +9,7 @@ public interface StudentService {
     SearchResultDTO<StudentDTO> getStudentPending(StudentDTO studentDTO);
     ResponseStatus addStudent(AddStudentDTO addStudentDTO);
     ResponseStatus editStudent(AddStudentDTO addStudentDTO);
-    List<StudentDTO> getListStudentByIdClass(Long id);
+    List<StudentInClassDTO> getListStudentByIdClass(Long id);
     List<StudentDTO>  detailStudentClass(Long id);
     ResponseStatus updatePending(Long id);
     ResponseStatus deletePending(Long id);

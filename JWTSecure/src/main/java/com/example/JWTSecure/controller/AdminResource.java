@@ -1,4 +1,5 @@
 package com.example.JWTSecure.controller;
+
 import com.example.JWTSecure.DTO.*;
 import com.example.JWTSecure.DTO.ResponseStatus;
 import com.example.JWTSecure.domain.*;
@@ -6,6 +7,7 @@ import com.example.JWTSecure.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.text.ParseException;
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class AdminResource {
     public ResponseEntity<List<Room>> getRoom() {
         return ResponseEntity.ok().body(academicAdminService.getRooms());
     }
+
     @GetMapping("/get_teachers")
     public ResponseEntity<List<TeacherDTO>> getTeacher() {
         return ResponseEntity.ok().body(teacherService.list());
@@ -109,9 +112,9 @@ public class AdminResource {
         return ResponseEntity.ok().body(classService.getAllClass(classDTO));
     }
 
-    @PostMapping("/view_student_class/{id}")
-    public ResponseEntity<List<StudentDTO>> getListStudentClass(@PathVariable Long id) {
-        return ResponseEntity.ok().body(studentService.getListStudentByIdClass(id));
+    @PostMapping("/view_student_class")
+    public ResponseEntity<List<StudentInClassDTO>> getListStudentClass(@RequestBody StudentInClassDTO studentInClassDTO) {
+        return ResponseEntity.ok().body(studentService.getListStudentByIdClass(studentInClassDTO.getClass_id()));
     }
 
     @PostMapping("/search_student")
@@ -151,9 +154,9 @@ public class AdminResource {
 
     @PostMapping("/add_class")
     public ResponseEntity<ResponseStatus> addClass(@RequestBody ClassDTO classDTO) {
-        try{
+        try {
             return ResponseEntity.ok().body(classService.addClass(classDTO));
-        }catch (ParseException ex){
+        } catch (ParseException ex) {
         }
         return null;
     }

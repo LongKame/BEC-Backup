@@ -1,4 +1,6 @@
 package com.example.JWTSecure.service.impl;
+
+import com.example.JWTSecure.domain.PasswordResetToken;
 import com.example.JWTSecure.domain.Role;
 import com.example.JWTSecure.domain.User;
 import com.example.JWTSecure.repo.*;
@@ -17,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -43,6 +46,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
+    private final ConfirmationTokenResetPasswordService confirmationTokenResetPasswordService;
 
 
     @Override
@@ -95,11 +99,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (user == null) {
             log.error("User not found in the database");
             throw new UsernameNotFoundException("User not found in the database");
+        } else if (!user.isActive()) {
+            log.error("User is deactive");
+            throw new UsernameNotFoundException("User is deactive");
         } else {
             log.info("User found in the database: {}", username);
         }
-
-        if(!user.isEnabled()){
+        if (!user.isEnabled()) {
             log.error("Account is enabled");
             throw new UsernameNotFoundException("Account is enabled, verify");
         }
@@ -111,38 +117,35 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             set.add(new Role(1L, "ROLE_ADMIN"));
         } else if (academicAdminRepo.findByUserId(userId) != null) {
             set.add(new Role(2L, "ROLE_ACADEMIC_ADMIN"));
-        }else if (teacherRepo.findByUserId(userId) != null) {
+        } else if (teacherRepo.findByUserId(userId) != null) {
             set.add(new Role(3L, "ROLE_TEACHER"));
-        }else if (studentRepo.findByUserId(userId) != null) {
+        } else if (studentRepo.findByUserId(userId) != null) {
             set.add(new Role(4L, "ROLE_STUDENT"));
-        }else {
+        } else {
             set.add(new Role(5L, "ROLE_GUEST"));
         }
 
         set.stream().forEach(i -> authorities.add(new SimpleGrantedAuthority(i.getName())));
-        List<String> list = new ArrayList<>();
-        list.add(user.getUsername());
-        list.add(user.getFullname());
 
         Map<String, String> map = new HashMap<>();
         map.put("username", user.getUsername());
         map.put("name", user.getFullname());
 
         String userPayload = "";
-		try {
-			userPayload = new ObjectMapper().writeValueAsString(map);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
+        try {
+            userPayload = new ObjectMapper().writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return new org.springframework.security.core.userdetails.User(userPayload, user.getPassword(), authorities);
     }
 
     @Override
     public String signUpUser(User appUser) {
-        boolean userExists = userRepo.findByEmail(appUser.getEmail())!=null;
+        boolean userExists = userRepo.findByEmail(appUser.getEmail()) != null;
 
         if (userExists) {
-            User appUserPrevious =  userRepo.findByEmail(appUser.getEmail());
+            User appUserPrevious = userRepo.findByEmail(appUser.getEmail());
             Boolean isEnabled = appUserPrevious.isEnabled();
 
             if (!isEnabled) {
@@ -169,8 +172,31 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public void saveConfirmationTokenResetPassword(User appUser, String token) {
+        try{
+            PasswordResetToken passwordResetToken = new PasswordResetToken(token, appUser.getId(), LocalDateTime.now(),
+                    LocalDateTime.now().plusMinutes(15));
+            confirmationTokenResetPasswordService.saveConfirmationToken(passwordResetToken);
+        }catch (Exception ex){
+
+        }
+    }
+
+    @Override
     public int enableAppUser(String email) {
         return userRepo.enableAppUser(email);
+    }
 
+    @Override
+    public int activeAppUser(String email) {
+        return userRepo.activeAppUser(email);
+    }
+
+    @Override
+    public String createPasswordResetTokenForUser(Long id) {
+        User user = userRepo.findById(id).get();
+        String token = UUID.randomUUID().toString();
+        saveConfirmationTokenResetPassword(user, token);
+        return token;
     }
 }

@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -76,7 +77,7 @@ public class TeacherServiceImpl implements TeacherService {
         StringBuilder message = new StringBuilder();
 
         boolean isValidEmail = emailValidator.test(addTeacherDTO.getEmail());
-        if(!isValidEmail){
+        if (!isValidEmail) {
             message.append("Email is not valid");
             rs.setMessage(message.toString());
             rs.setState(false);
@@ -120,16 +121,16 @@ public class TeacherServiceImpl implements TeacherService {
                     teacher.setRoleId(3L);
                     teacher.setImageUrl(addTeacherDTO.getImageUrl());
                     teacherRepo.save(teacher);
-                    rs.setMessage("Ok");
+                    rs.setMessage("Add successful");
                     rs.setState(true);
                 }
             } else {
-                rs.setMessage("Failure");
+                rs.setMessage("Add failed");
                 rs.setState(false);
             }
             return rs;
         } catch (Exception ex) {
-            rs.setMessage("Failure");
+            rs.setMessage("Add failed");
             rs.setState(false);
             return rs;
         }
@@ -185,7 +186,7 @@ public class TeacherServiceImpl implements TeacherService {
                         teacher.setImageUrl(addTeacherDTO.getImageUrl());
                         teacherRepo.save(teacher);
 
-                        rs.setMessage("Ok");
+                        rs.setMessage("Update successful");
                         rs.setState(true);
                     }
                 }
@@ -209,15 +210,15 @@ public class TeacherServiceImpl implements TeacherService {
                         teacher.setImageUrl(addTeacherDTO.getImageUrl());
                         teacherRepo.save(teacher);
 
-                        rs.setMessage("Ok");
+                        rs.setMessage("Update successful");
                         rs.setState(true);
                     }
                 } else {
-                    rs.setMessage("Failure");
+                    rs.setMessage("Update failed");
                     rs.setState(false);
                 }
             } catch (Exception ex) {
-                rs.setMessage("Failure");
+                rs.setMessage("Update failed");
                 rs.setState(false);
             }
         }
@@ -249,7 +250,7 @@ public class TeacherServiceImpl implements TeacherService {
                     teacher.setRoleId(3L);
                     teacher.setImageUrl(addTeacherDTO.getImageUrl());
                     teacherRepo.save(teacher);
-                    rs.setMessage("Ok");
+                    rs.setMessage("Update successful");
                     rs.setState(true);
                     return rs;
                 }
@@ -270,7 +271,7 @@ public class TeacherServiceImpl implements TeacherService {
                     teacher.setRoleId(3L);
                     teacher.setImageUrl(addTeacherDTO.getImageUrl());
                     teacherRepo.save(teacher);
-                    rs.setMessage("Ok");
+                    rs.setMessage("Update successful");
                     rs.setState(true);
                     return rs;
                 }
@@ -298,15 +299,15 @@ public class TeacherServiceImpl implements TeacherService {
             if (id != null) {
                 userRepo.deactive(teacherRepo.findByUserId(id).getUserId());
                 responseStatus.setState(true);
-                responseStatus.setMessage("Success");
+                responseStatus.setMessage("Deactive successful");
             } else {
                 responseStatus.setState(false);
-                responseStatus.setMessage("Failure");
+                responseStatus.setMessage("Deactive failed");
             }
             return responseStatus;
         } catch (Exception e) {
             responseStatus.setState(false);
-            responseStatus.setMessage("Failure");
+            responseStatus.setMessage("Deactive failed");
             return responseStatus;
         }
     }

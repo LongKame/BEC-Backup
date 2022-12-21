@@ -7,6 +7,7 @@ import com.example.JWTSecure.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ public class RoomServiceImpl implements RoomService {
                     room.setUpdatedAt(localDateTime);
                     roomRepo.save(room);
                     responseStatus.setState(true);
-                    responseStatus.setMessage("Success");
+                    responseStatus.setMessage("Add successful");
                 } else {
                     responseStatus.setState(false);
                     responseStatus.setMessage("Room name is existed!");
@@ -43,7 +44,7 @@ public class RoomServiceImpl implements RoomService {
             return responseStatus;
         } catch (Exception e) {
             responseStatus.setState(false);
-            responseStatus.setMessage("Failure");
+            responseStatus.setMessage("Add failed");
             return responseStatus;
         }
     }
@@ -54,7 +55,6 @@ public class RoomServiceImpl implements RoomService {
         String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         LocalDateTime localDateTime = LocalDateTime.parse(timeStamp, formatter);
-        boolean check = true;
         try {
             if (room != null) {
 
@@ -63,7 +63,7 @@ public class RoomServiceImpl implements RoomService {
                     room.setUpdatedAt(localDateTime);
                     roomRepo.save(room);
                     responseStatus.setState(true);
-                    responseStatus.setMessage("Success");
+                    responseStatus.setMessage("Update successful");
                     return responseStatus;
                 }
                 if (roomRepo.findByRoomname(room.getRoomname()) == null) {
@@ -71,7 +71,7 @@ public class RoomServiceImpl implements RoomService {
                     room.setUpdatedAt(localDateTime);
                     roomRepo.save(room);
                     responseStatus.setState(true);
-                    responseStatus.setMessage("Success");
+                    responseStatus.setMessage("Update successful");
                     return responseStatus;
                 }
                 if (roomRepo.findByRoomname(room.getRoomname()) != null) {
@@ -84,12 +84,12 @@ public class RoomServiceImpl implements RoomService {
                 }
             } else {
                 responseStatus.setState(false);
-                responseStatus.setMessage("Failure");
+                responseStatus.setMessage("Update failed");
             }
             return responseStatus;
         } catch (Exception e) {
             responseStatus.setState(false);
-            responseStatus.setMessage("Failure");
+            responseStatus.setMessage("Update failed");
             return responseStatus;
         }
     }
@@ -101,15 +101,15 @@ public class RoomServiceImpl implements RoomService {
             if (id != null) {
                 roomRepo.updateActiveRoom(id);
                 responseStatus.setState(true);
-                responseStatus.setMessage("Success");
+                responseStatus.setMessage("Update successful");
             } else {
                 responseStatus.setState(false);
-                responseStatus.setMessage("Failure");
+                responseStatus.setMessage("Update failed");
             }
             return responseStatus;
         } catch (Exception e) {
             responseStatus.setState(false);
-            responseStatus.setMessage("Failure");
+            responseStatus.setMessage("Update failed");
             return responseStatus;
         }
     }

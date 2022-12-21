@@ -1,7 +1,9 @@
 package com.example.JWTSecure.CorsFilter;
+
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -26,7 +28,7 @@ public class CorsFilter implements Filter {
 //        chain.doFilter(req, res);
 
         HttpServletResponse response = (HttpServletResponse) res;
-        HttpServletRequest request= (HttpServletRequest) req;
+        HttpServletRequest request = (HttpServletRequest) req;
 
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
@@ -41,8 +43,7 @@ public class CorsFilter implements Filter {
 //        response.setHeader("Access-Control-Allow-Credentials", "true");
 //        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
 //        response.setHeader("Access-Control-Max-Age", "3600");
-//        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
-//
+//        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X -Requested-With, remember-me");
 //        chain.doFilter(req, res);
 
     }

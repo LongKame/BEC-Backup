@@ -1,4 +1,5 @@
 package com.example.JWTSecure.domain;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -6,6 +7,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -15,7 +17,7 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @Table(name = "users")
-public class User implements UserDetails{
+public class User implements UserDetails {
     @Id
     @SequenceGenerator(
             name = "users_sequence",
@@ -28,21 +30,21 @@ public class User implements UserDetails{
     )
     @Column(name = "id", unique = true)
     private Long id;
-    @Column(name="username")
+    @Column(name = "username")
     private String username;
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
-    @Column(name="fullname")
+    @Column(name = "fullname")
     private String fullname;
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
-    @Column(name="phone")
+    @Column(name = "phone")
     private String phone;
-    @Column(name="address")
+    @Column(name = "address")
     private String address;
-    @Column(name="active")
+    @Column(name = "active")
     private boolean active;
-    @Column(name="enabled")
+    @Column(name = "enabled")
     private boolean enabled;
 
     public User(String username, String fullname, String password, String email, String phone, String address, boolean active) {
@@ -75,10 +77,6 @@ public class User implements UserDetails{
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("");
         return Collections.singletonList(authority);
     }
-
-//    public Boolean getEnabled() {
-//        return enabled;
-//    }
 
     @Override
     public String getPassword() {

@@ -1,12 +1,15 @@
 package com.example.JWTSecure.controller;
+
 import com.example.JWTSecure.DTO.*;
 import com.example.JWTSecure.DTO.ResponseStatus;
 import com.example.JWTSecure.domain.Classes;
 import com.example.JWTSecure.domain.Course;
 import com.example.JWTSecure.service.*;
+import com.example.JWTSecure.service.impl.ResetPassword;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -19,6 +22,7 @@ public class CommonResource {
     private final ClassService classService;
     private final StudentService studentService;
     private final SlotService slotService;
+    private final ResetPassword resetPassword;
 
     @GetMapping("/get_class")
     public ResponseEntity<List<Classes>> getClass1() {
@@ -88,5 +92,25 @@ public class CommonResource {
     @PutMapping("/edit_profile_student")
     public ResponseEntity<ResponseStatus> editTeacher(@RequestBody StudentDTO studentDTO) {
         return ResponseEntity.ok().body(studentService.editStudentByStudent(studentDTO));
+    }
+
+    @PostMapping("/reset_password")
+    public String resetPassword(@RequestBody RegistrationRequest request) {
+        return resetPassword.reset(request);
+    }
+
+    @GetMapping(path = "/confirm_reset_password")
+    public String confirm(@RequestParam("token") String token, @RequestParam("user_id") Long user_id) {
+        return resetPassword.confirmToken(token, user_id);
+    }
+
+    @PostMapping("/save_new_password")
+    public String saveNewPassword(@RequestParam("password") String password, @RequestParam("user_id") Long user_id) {
+        return resetPassword.saveNewPassword(password, user_id);
+    }
+
+    @PostMapping("/change_password")
+    public ResponseStatus changePassword(@RequestBody ChangePassword changePassword) {
+        return resetPassword.changePassword(changePassword);
     }
 }

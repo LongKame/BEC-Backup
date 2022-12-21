@@ -1,5 +1,6 @@
 package com.example.JWTSecure.repo.impl;
 import com.example.JWTSecure.DTO.StudentDTO;
+import com.example.JWTSecure.DTO.StudentInClassDTO;
 import com.example.JWTSecure.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
@@ -190,7 +191,6 @@ public class StudentCustomRepo {
         return query.list();
     }
 
-
     public StudentDTO getStudent(StudentDTO studentDTO) {
 
         if(studentDTO.getUser_name()!=null){
@@ -231,36 +231,34 @@ public class StudentCustomRepo {
         return (StudentDTO) query.getSingleResult();
     }
 
-    //bug
-    public List<StudentDTO> getListStudentByIdClass(Long id) {
+    public List<StudentInClassDTO> getListStudentByIdClass(Long id) {
 
         StringBuilder sql = new StringBuilder()
-                .append("select s.id as student_Id, s.user_id as user_Id, s.class_id as class_Id, " +
-                        "u.fullname as full_name, u.email, u.phone, u.address, u.active\n" +
-                        "from student s join class c on c.id = s.class_id join users u on s.user_id = u.id ");
+                .append("select sic.id as student_in_class_id, student_id as student_id, class_id as class_id, user_id as user_id, fullname as full_name, email as email,\n" +
+                        "phone as phone, address as address from student_in_class sic join student s on sic.student_id = s.id join users u on s.user_id = u.id ");
         sql.append("WHERE 1 = 1 ");
         if(id!=null){
-            sql.append(" AND s.class_id = :class_id ");
+            sql.append(" AND class_id = :class_id ");
         }
 
-        sql.append(" order by s.id ");
+        sql.append(" and sic.is_paid=true order by sic.id");
 
-        NativeQuery<StudentDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
+        NativeQuery<StudentInClassDTO> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
         if (id != null) {
             query.setParameter("class_id", id);
         }
 
-        query.addScalar("student_Id", new LongType());
-        query.addScalar("user_Id", new LongType());
-        query.addScalar("class_Id", new LongType());
+        query.addScalar("student_in_class_id", new LongType());
+        query.addScalar("student_id", new LongType());
+        query.addScalar("class_id", new LongType());
+        query.addScalar("user_id", new LongType());
         query.addScalar("full_name", new StringType());
         query.addScalar("email", new StringType());
         query.addScalar("phone", new StringType());
         query.addScalar("address", new StringType());
-        query.addScalar("active", new BooleanType());
 
-        query.setResultTransformer(Transformers.aliasToBean(StudentDTO.class));
+        query.setResultTransformer(Transformers.aliasToBean(StudentInClassDTO.class));
         return query.list();
     }
 

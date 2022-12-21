@@ -1,4 +1,5 @@
 package com.example.JWTSecure.repo.impl;
+
 import com.example.JWTSecure.DTO.ChangeSlot;
 import com.example.JWTSecure.DTO.TimeTableStudentDTO;
 import com.example.JWTSecure.DTO.TimeTableTeacherDTO;
@@ -16,6 +17,7 @@ import org.hibernate.type.IntegerType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
@@ -121,12 +123,12 @@ public class ClassScheduleCustomRepo {
     public List<ChangeSlot> findSlotEmpty(ChangeSlot changeSlotDTO) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate localDate = LocalDate.parse(changeSlotDTO.getDate(), formatter);
+        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        localDate = LocalDate.parse(localDate.toString(), formatter);
         StringBuilder sql = new StringBuilder()
                 .append("select cs.id as class_schedule_id from class_schedule cs join class c on cs.class_id = c.id\n ");
         sql.append(" WHERE 1 = 1");
-        if (changeSlotDTO.getSlot_th() != null) {
-            sql.append(" AND cs.slot_th = :slot_th");
-        }
+
         if (changeSlotDTO.getRoom_id() != null) {
             sql.append(" AND cs.room_id = :room_id ");
         }
@@ -142,9 +144,6 @@ public class ClassScheduleCustomRepo {
 
         NativeQuery<ChangeSlot> query = ((Session) entityManager.getDelegate()).createNativeQuery(sql.toString());
 
-        if (changeSlotDTO.getSlot_th() != null) {
-            query.setParameter("slot_th", changeSlotDTO.getSlot_th());
-        }
         if (changeSlotDTO.getRoom_id() != null) {
             query.setParameter("room_id", changeSlotDTO.getRoom_id());
         }

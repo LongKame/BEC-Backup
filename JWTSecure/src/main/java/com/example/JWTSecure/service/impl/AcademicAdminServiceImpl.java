@@ -56,15 +56,15 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
             if (id != null) {
                 quizRepo.deleteById(id);
                 responseStatus.setState(true);
-                responseStatus.setMessage("Success");
+                responseStatus.setMessage("Update successful");
             } else {
                 responseStatus.setState(false);
-                responseStatus.setMessage("Failure");
+                responseStatus.setMessage("Delete failed");
             }
             return responseStatus;
         } catch (Exception e) {
             responseStatus.setState(false);
-            responseStatus.setMessage("Failure");
+            responseStatus.setMessage("Delete failed");
             return responseStatus;
         }
     }
@@ -82,10 +82,10 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
                 LocalDateTime localDateTime = LocalDateTime.parse(timeStamp, formatter);
                 quiz.setUpdatedAt(localDateTime);
                 quizRepo.save(quiz);
-                rs.setMessage("Ok");
+                rs.setMessage("Update successful");
                 rs.setState(true);
             } catch (Exception ex) {
-                rs.setMessage("Failure");
+                rs.setMessage("Update failed");
                 rs.setState(false);
             }
         }
@@ -103,10 +103,10 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
                 quiz.setCreatedAt(localDateTime);
                 quiz.setUpdatedAt(localDateTime);
                 quizRepo.save(quiz);
-                rs.setMessage("Ok");
+                rs.setMessage("Add successful");
                 rs.setState(true);
             } catch (Exception ex) {
-                rs.setMessage("Failure");
+                rs.setMessage("Add failed");
                 rs.setState(false);
             }
         }
@@ -237,16 +237,16 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
                             academicAdmin.setUserId(userRepo.findByUsername(addAcademicAdminDTO.getUser_name()).getId());
                             academicAdmin.setRoleId(2L);
                             academicAdminRepo.save(academicAdmin);
-                            rs.setMessage("Ok");
+                            rs.setMessage("Add successful");
                             rs.setState(true);
                         }
                     }
                 } else {
-                    rs.setMessage("Failure");
+                    rs.setMessage("Add failed");
                     rs.setState(false);
                 }
             } catch (Exception ex) {
-                rs.setMessage("Failure");
+                rs.setMessage("Add failed");
                 rs.setState(false);
             }
         }
@@ -285,15 +285,15 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
                         user.setAddress(addAcademicAdminDTO.getAddress());
                         user.setActive(addAcademicAdminDTO.isActive());
                         userRepo.save(user);
-                        rs.setMessage("Ok");
+                        rs.setMessage("Update successful");
                         rs.setState(true);
                     }
                 } else {
-                    rs.setMessage("Failure");
+                    rs.setMessage("Update failed");
                     rs.setState(false);
                 }
             } catch (Exception ex) {
-                rs.setMessage("Failure");
+                rs.setMessage("Update failed");
                 rs.setState(false);
             }
         }
@@ -307,15 +307,15 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
             if (id != null) {
                 userRepo.deactiveAca(id);
                 responseStatus.setState(true);
-                responseStatus.setMessage("Success");
+                responseStatus.setMessage("Delete successful");
             } else {
                 responseStatus.setState(false);
-                responseStatus.setMessage("Failure");
+                responseStatus.setMessage("Delete failed");
             }
             return responseStatus;
         } catch (Exception e) {
             responseStatus.setState(false);
-            responseStatus.setMessage("Failure");
+            responseStatus.setMessage("Delete failed");
             return responseStatus;
         }
     }
@@ -326,10 +326,10 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
         if (course != null) {
             try {
                 courseRepo.save(course);
-                rs.setMessage("Ok");
+                rs.setMessage("Add successful");
                 rs.setState(true);
             } catch (Exception ex) {
-                rs.setMessage("Failure");
+                rs.setMessage("Add failed");
                 rs.setState(false);
             }
         }
@@ -353,10 +353,10 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
                 course.setUpdatedAt(localDateTime);
                 course.setNumberSlot(courseDTO.getNumberSlot());
                 courseRepo.save(course);
-                rs.setMessage("Ok");
+                rs.setMessage("Update successful");
                 rs.setState(true);
             } catch (Exception ex) {
-                rs.setMessage("Failure");
+                rs.setMessage("Update failed");
                 rs.setState(false);
             }
         }
@@ -437,10 +437,10 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
                 curriculum.setCreatedAt(localDateTime);
                 curriculum.setUpdatedAt(localDateTime);
                 curriculumRepo.save(curriculum);
-                rs.setMessage("Ok");
+                rs.setMessage("Add successful");
                 rs.setState(true);
             } catch (Exception ex) {
-                rs.setMessage("Failure");
+                rs.setMessage("Update failed");
                 rs.setState(false);
             }
         }
@@ -458,10 +458,10 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
                 LocalDateTime localDateTime = LocalDateTime.parse(timeStamp, formatter);
                 curriculum.setUpdatedAt(localDateTime);
                 curriculumRepo.save(curriculum);
-                rs.setMessage("Ok");
+                rs.setMessage("Update successful");
                 rs.setState(true);
             } catch (Exception ex) {
-                rs.setMessage("Failure");
+                rs.setMessage("Update failed");
                 rs.setState(false);
             }
         }
@@ -475,15 +475,15 @@ public class AcademicAdminServiceImpl implements AcademicAdminService {
             if (id != null) {
                 curriculumRepo.deleteById(id);
                 responseStatus.setState(true);
-                responseStatus.setMessage("Success");
+                responseStatus.setMessage("Delete successful");
             } else {
                 responseStatus.setState(false);
-                responseStatus.setMessage("Failure");
+                responseStatus.setMessage("Delete failed");
             }
             return responseStatus;
         } catch (Exception e) {
             responseStatus.setState(false);
-            responseStatus.setMessage("Failure");
+            responseStatus.setMessage("Delete failed");
             return responseStatus;
         }
     }

@@ -29,7 +29,9 @@ public interface UserRepo extends JpaRepository<User, Long> {
     int deactiveAca(Long id);
     @Transactional
     @Modifying
-    @Query("UPDATE User a SET a.enabled=true WHERE a.email=?1")
+    @Query("UPDATE User a SET a.enabled=true, a.active=true WHERE a.email=?1")
     int enableAppUser(String email);
+    @Query("UPDATE User a SET a.active=true WHERE a.email=?1")
+    int activeAppUser(String email);
 }
 

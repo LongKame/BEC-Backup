@@ -1,4 +1,5 @@
 package com.example.JWTSecure.controller;
+
 import com.example.JWTSecure.DTO.RegistrationRequest;
 import com.example.JWTSecure.service.impl.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;

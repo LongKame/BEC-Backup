@@ -13,6 +13,7 @@ import com.example.JWTSecure.validate.EmailValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -29,15 +30,19 @@ public class RegistrationService {
 
     public String register(RegistrationRequest request) {
         boolean isValidEmail = emailValidator.test(request.getEmail());
+
         if (isValidEmail) {
-            String tokenForNewUser =  appUserService.signUpUser(new User(request.getUsername(),
+            if (userRepo.findByUsername(request.getUsername()) != null) {
+                return "false";
+            }
+            String tokenForNewUser = appUserService.signUpUser(new User(request.getUsername(),
                     request.getPassword(),
                     request.getFullname(),
                     request.getEmail(),
                     request.getPhone(),
                     request.getAddress()));
             User user = userRepo.findByUsername(request.getUsername());
-            studentRepo.save(new Student(null, user.getId(),4L));
+            studentRepo.save(new Student(null, user.getId(), 4L));
             String link = "http://localhost:8070/api/v1/registration/confirm?token=" + tokenForNewUser;
             emailSender.sendEmail(request.getEmail(), buildEmail(request.getFullname(), link));
             return tokenForNewUser;
