@@ -65,8 +65,6 @@ public class SlotServiceImpl implements SlotService {
         }
         responseStatus.setMessage("Update failed");
         responseStatus.setState(false);
-        responseStatus.setMessage("Update failed");
-        responseStatus.setState(false);
         return responseStatus;
     }
 }
